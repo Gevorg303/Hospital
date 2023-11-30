@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>Пациент</h1><hr>
+<h4>Подробная информация</h4>
+
+
+<b>Фамилия пациента:</b>${patientCard.surname}<br>
+<b>Имя пациента:</b>${patientCard.name}<br>
+<b>Отчество пациента:</b>${patientCard.patronymic}<br>
+<b>Пол:</b>${patientCard.floor}<br>
+<b>Дата рождения:</b>${patientCard.dateOfBirth}<br>
+<b>Номер телефона:</b>${patientCard.phoneNumber}<br>
+<b>Серия и номер паспорта:</b>${patientCard.passportSeriesNumber}<br>
+
+
+<hr>
+<form action="/patientCard/delete/${patientCard.id}" method="post">
+    <input type="submit" value="Удалить пациента">
+</form>
+
+</body>
+</html>
