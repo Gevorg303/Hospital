@@ -17,6 +17,7 @@ public class PatientCardController {
         model.addAttribute("patientCardList", patientCardService.list());
         return "main";
     }
+
     @GetMapping("/patientCard/{id}")
     public String patientCardInfo(@PathVariable Long id, Model model){
         PatientCard patientCard = patientCardService.getPatientCardById(id);
@@ -25,7 +26,7 @@ public class PatientCardController {
     }
 
     @PostMapping("/patientCard/create")
-    public String createPatientCard(@RequestParam PatientCard patientCard){
+    public String createPatientCard(PatientCard patientCard){
         patientCardService.savePatientCard(patientCard);
         return "redirect:/";
     }
@@ -35,5 +36,5 @@ public class PatientCardController {
         patientCardService.deleteProduct(id);
         return "redirect:/";
     }
-    //Список договоров: <input type="text" name="contractList[0].fieldName"/>
+
 }

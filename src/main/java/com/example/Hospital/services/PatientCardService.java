@@ -1,14 +1,16 @@
 package com.example.Hospital.services;
 
+import com.example.Hospital.domain.Contract;
 import com.example.Hospital.domain.PatientCard;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PatientCardService {
-    private List<PatientCard> patientCardList = new ArrayList<>();
+    private final List<PatientCard> patientCardList = new ArrayList<>();
     private  long ID=0;
     {
         patientCardList.add(new PatientCard(
@@ -20,7 +22,8 @@ public class PatientCardService {
                 "12.21.2001",
                 "89202328765",
                 "3124334455"
-                ));
+                //new ArrayList<>()
+        ));
 
         patientCardList.add(new PatientCard(
                 ++ID,
@@ -31,6 +34,7 @@ public class PatientCardService {
                 "09.21.2012",
                 "89202328765",
                 "3124334455"
+                //new ArrayList<>()
         ));
     }
 
@@ -43,14 +47,16 @@ public class PatientCardService {
         patientCardList.add(patientCard);
     }
     public void deleteProduct(Long id){
-        patientCardList.removeIf(patientCard -> patientCard.getId()==id);
+        patientCardList.removeIf(patientCard -> Objects.equals(patientCard.getId(), id));
     }
 
     public PatientCard getPatientCardById(Long id) {
         for(PatientCard patientCard:patientCardList){
-            if(patientCard.getId()==id)
+            if(Objects.equals(patientCard.getId(), id))
                 return  patientCard;
         }
         return null;
     }
 }
+//<b>Список договоров:</b>${patientCard.contractList}<br>
+//<input type="submit" value="Добавить пациента">

@@ -14,6 +14,7 @@
 </#list>
 <hr>
 <h3>Добавить пациента</h3>
+
 <form action="/patientCard/create" method="post">
     Фамилия: <input type="text" name="surname"/><br><br>
     Имя: <input type="text" name="name"/><br><br>

@@ -6,7 +6,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class PatientCard {
-    private long id;
+    private Long id;
     private String surname;/*Фамилия пациента*/
     private String name;/*Имя*/
     private String patronymic;/*Отчество*/

@@ -17,6 +17,7 @@
 <b>Серия и номер паспорта:</b>${patientCard.passportSeriesNumber}<br>
 
 
+
 <hr>
 <form action="/patientCard/delete/${patientCard.id}" method="post">
     <input type="submit" value="Удалить пациента">
