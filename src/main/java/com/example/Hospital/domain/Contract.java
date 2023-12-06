@@ -1,37 +1,23 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Контракт")
 public class Contract {
-    private PatientCard patientCard;/*Карточка пациента*/
-    private Service service;/*Оказываемая услуга*/
-    private LegalRepresentative legalRepresentative;/*Законный представитель*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Contract(PatientCard patientCard, Service service, LegalRepresentative legalRepresentative) {
-        this.patientCard = patientCard;
-        this.service = service;
-        this.legalRepresentative = legalRepresentative;
-    }
+    @ManyToOne
+    @JoinColumn(name = "patient_card_id")
+    private PatientCard patientCard;
 
-    public PatientCard getPatientCard() {
-        return patientCard;
-    }
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private Service service;
 
-    public void setPatientCard(PatientCard patientCard) {
-        this.patientCard = patientCard;
-    }
-
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
-    }
-
-    public LegalRepresentative getLegalRepresentative() {
-        return legalRepresentative;
-    }
-
-    public void setLegalRepresentative(LegalRepresentative legalRepresentative) {
-        this.legalRepresentative = legalRepresentative;
-    }
+    @ManyToOne
+    @JoinColumn(name = "legal_representative_id")
+    private LegalRepresentative legalRepresentative;
 }

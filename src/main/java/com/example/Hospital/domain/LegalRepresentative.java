@@ -1,77 +1,34 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "legal_representative")
 public class LegalRepresentative {
-    private String surname;/*Фамилия представителя*/
-    private String name;/*Имя представителя*/
-    private String patronymic;/*Отчество представителя*/
-    private String dateOfBirth;/*Дата рождения*/
-    private String phoneNumber;/*Контактный номер телефона*/
-    private PatientCard ward;/*Подопечный*/
-    private Contract contract;/*Договор*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public LegalRepresentative(String surname, String name, String patronymic, String dateOfBirth, String phoneNumber, PatientCard ward, Contract contract) {
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.ward = ward;
-        this.contract = contract;
-    }
+    @Column(name = "surname")
+    private String surname;
 
-    public String getSurname() {
-        return surname;
-    }
+    @Column(name = "name")
+    private String name;
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
+    @Column(name = "patronymic")
+    private String patronymic;
 
-    public String getName() {
-        return name;
-    }
+    @Column(name = "date_of_birth")
+    private String dateOfBirth;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    public String getPatronymic() {
-        return patronymic;
-    }
+    @ManyToOne
+    @JoinColumn(name = "ward_id")
+    private PatientCard ward;
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public PatientCard getWard() {
-        return ward;
-    }
-
-    public void setWard(PatientCard ward) {
-        this.ward = ward;
-    }
-
-    public Contract getContract() {
-        return contract;
-    }
-
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
+    @ManyToOne
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
 }

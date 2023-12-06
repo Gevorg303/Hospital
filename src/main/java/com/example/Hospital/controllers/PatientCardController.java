@@ -13,8 +13,8 @@ public class PatientCardController {
     private final PatientCardService patientCardService;
 
     @GetMapping("/")
-    public String patientCard(Model model){
-        model.addAttribute("patientCardList", patientCardService.list());
+    public String patientCard(@RequestParam(name = "id", required = false) Long id, Model model){
+        model.addAttribute("patientCardList", patientCardService.patientCardList(id));
         return "main";
     }
 
@@ -33,7 +33,7 @@ public class PatientCardController {
 
     @PostMapping("/patientCard/delete/{id}")
     public String deletePatientCard(@PathVariable Long id){
-        patientCardService.deleteProduct(id);
+        patientCardService.deletePatientCard(id);
         return "redirect:/";
     }
 

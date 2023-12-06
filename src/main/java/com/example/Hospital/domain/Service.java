@@ -1,27 +1,17 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "service")
 public class Service {
-    private String name;/*Наименование услуги*/
-    private int price;/*Стоимость услуги*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Service(String name, int price) {
-        this.name = name;
-        this.price = price;
-    }
+    @Column(name = "name")
+    private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
+    @Column(name = "price")
+    private int price;
 }

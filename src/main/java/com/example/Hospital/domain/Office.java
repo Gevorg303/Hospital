@@ -1,27 +1,17 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "office")
 public class Office {
-    private int number;/*Номер кабинета*/
-    private String name;/*Наименование*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Office(int number, String name) {
-        this.number = number;
-        this.name = name;
-    }
+    @Column(name = "number")
+    private int number;
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "name")
+    private String name;
 }

@@ -1,37 +1,21 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "work_schedule")
 public class WorkSchedule {
-    private DayOfWeekAndOpeningHours dayOfWeekAndOpeningHours;/*День недели и время работы*/
-    private int bet;/*Ставка*/
-    private String dateOfCalculationBid;/*Дата исчисления ставки*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public WorkSchedule(DayOfWeekAndOpeningHours dayOfWeekAndOpeningHours, int bet, String dateOfCalculationBid) {
-        this.dayOfWeekAndOpeningHours = dayOfWeekAndOpeningHours;
-        this.bet = bet;
-        this.dateOfCalculationBid = dateOfCalculationBid;
-    }
+    @ManyToOne
+    @JoinColumn(name = "day_of_week_and_opening_hours_id")
+    private DayOfWeekAndOpeningHours dayOfWeekAndOpeningHours;
 
-    public DayOfWeekAndOpeningHours getDayOfWeekAndOpeningHours() {
-        return dayOfWeekAndOpeningHours;
-    }
+    @Column(name = "bet")
+    private int bet;
 
-    public void setDayOfWeekAndOpeningHours(DayOfWeekAndOpeningHours dayOfWeekAndOpeningHours) {
-        this.dayOfWeekAndOpeningHours = dayOfWeekAndOpeningHours;
-    }
-
-    public int getBet() {
-        return bet;
-    }
-
-    public void setBet(int bet) {
-        this.bet = bet;
-    }
-
-    public String getDateOfCalculationBid() {
-        return dateOfCalculationBid;
-    }
-
-    public void setDateOfCalculationBid(String dateOfCalculationBid) {
-        this.dateOfCalculationBid = dateOfCalculationBid;
-    }
+    @Column(name = "date_of_calculation_bid")
+    private String dateOfCalculationBid;
 }

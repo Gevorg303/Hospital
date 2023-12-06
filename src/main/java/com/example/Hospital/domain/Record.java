@@ -1,47 +1,28 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "record")
 public class Record {
-    private PatientCard patientCard;/*Пациент*/
-    private Doctor doctor;/*Врач проводящий прием*/
-    private String DateReception;/*Дата приема*/
-    private String TimeReception;/*Время приема*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Record(PatientCard patientCard, Doctor doctor, String dateReception, String timeReception) {
-        this.patientCard = patientCard;
-        this.doctor = doctor;
-        DateReception = dateReception;
-        TimeReception = timeReception;
-    }
+    @ManyToOne
+    @JoinColumn(name = "patient_card_id")
+    private PatientCard patientCard;
 
-    public PatientCard getPatientCard() {
-        return patientCard;
-    }
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
-    public void setPatientCard(PatientCard patientCard) {
-        this.patientCard = patientCard;
-    }
+    @Column(name = "diagnosis")
+    private String diagnosis;
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+    @Column(name = "date_reception")
+    private String DateReception;
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public String getDateReception() {
-        return DateReception;
-    }
-
-    public void setDateReception(String dateReception) {
-        DateReception = dateReception;
-    }
-
-    public String getTimeReception() {
-        return TimeReception;
-    }
-
-    public void setTimeReception(String timeReception) {
-        TimeReception = timeReception;
-    }
+    @Column(name = "time_reception")
+    private String TimeReception;
 }

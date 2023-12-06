@@ -1,18 +1,40 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.List;
-@Data
+@Entity
+@Table(name = "patient_card")
 @AllArgsConstructor
+@NoArgsConstructor
 public class PatientCard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String surname;/*Фамилия пациента*/
-    private String name;/*Имя*/
-    private String patronymic;/*Отчество*/
-    private String floor;/*Пол*/
-    private String dateOfBirth;/*Дата рождения*/
-    private String phoneNumber;/*Контактный номер телефона*/
-    private String passportSeriesNumber;/*Серия и номер паспорта*/
-    //private List<Contract> contractList;/*Список договоров*/
+
+    @Column(name = "surname")
+    private String surname;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "patronymic")
+    private String patronymic;
+
+    @Column(name = "floor")
+    private String floor;
+
+    @Column(name = "date_of_birth")
+    private String dateOfBirth;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "passport_series_number")
+    private String passportSeriesNumber;
+
+    @OneToMany(mappedBy = "patientCard")
+    private List<Contract> contractList;
 }

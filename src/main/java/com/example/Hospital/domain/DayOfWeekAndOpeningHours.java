@@ -1,27 +1,21 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "day_of_week_and_opening_hours")
 public class DayOfWeekAndOpeningHours {
-    private String startTime;/*Время начала работы*/
-    private String endTimeOfWork;/*Время окончания работы*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public DayOfWeekAndOpeningHours(String startTime, String endTimeOfWork) {
-        this.startTime = startTime;
-        this.endTimeOfWork = endTimeOfWork;
-    }
+    @Column(name = "start_time")
+    private String startTime;
 
-    public String getStartTime() {
-        return startTime;
-    }
+    @Column(name = "end_time_of_work")
+    private String endTimeOfWork;
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTimeOfWork() {
-        return endTimeOfWork;
-    }
-
-    public void setEndTimeOfWork(String endTimeOfWork) {
-        this.endTimeOfWork = endTimeOfWork;
-    }
+    @ManyToOne
+    @JoinColumn(name = "weekday_id")
+    private Weekday weekday;
 }

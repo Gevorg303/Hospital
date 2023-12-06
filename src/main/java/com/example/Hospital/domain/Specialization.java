@@ -1,27 +1,17 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "specialization")
 public class Specialization {
-    private String name;/*Наименование специализации*/
-    private String description;/*Описание специализации*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Specialization(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
+    @Column(name = "name")
+    private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @Column(name = "description")
+    private String description;
 }

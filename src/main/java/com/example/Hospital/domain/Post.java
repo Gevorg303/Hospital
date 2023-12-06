@@ -1,47 +1,24 @@
 package com.example.Hospital.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "post")
 public class Post {
-    private String name;/*Наименование должности*/
-    private String description;/*Описание*/
-    private int salary;/*Оклад*/
-    private Employee employee;/*Сотрудник*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Post(String name, String description, int salary, Employee employee) {
-        this.name = name;
-        this.description = description;
-        this.salary = salary;
-        this.employee = employee;
-    }
+    @Column(name = "name")
+    private String name;
 
-    public String getName() {
-        return name;
-    }
+    @Column(name = "description")
+    private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "salary")
+    private int salary;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }
