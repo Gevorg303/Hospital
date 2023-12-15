@@ -5,23 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "договор")
+@Table(name = "карточка_пациента_законный_предст")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Contract {
+public class PatientCardLegalRepresentative {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "идентификатор_договора")
+    @Column(name = "идентификатор")
     private Long id;
-    @Column(name = "дата_оформления_договора")
-    private LocalDate ContractDormationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "серия_и_номер_паспорта_пациента")
+    private PatientCard patientCard;
+
     @ManyToOne
     @JoinColumn(name = "идентификатор_законного_представ")
     private LegalRepresentative legalRepresentative;
-    @ManyToOne
-    @JoinColumn(name = "идентификатор_карточки_пациента")
-    private PatientCard patientCard;
 }

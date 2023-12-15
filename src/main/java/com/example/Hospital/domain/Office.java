@@ -1,17 +1,23 @@
 package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Entity
-@Table(name = "office")
+@Table(name = "кабинет_оказания_услуги")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "идентификатор_кабинета")
     private Long id;
 
-    @Column(name = "number")
+    @Column(name = "номер_кабинета")
     private int number;
 
-    @Column(name = "name")
+    @Column(name = "наименование_кабинета")
     private String name;
 }

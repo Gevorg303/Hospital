@@ -4,37 +4,38 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.time.LocalDate;
 import java.util.List;
+
 @Entity
-@Table(name = "patient_card")
+@Getter
+@Table(name = "карточка_пациента")
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientCard {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "surname")
-    private String surname;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "patronymic")
-    private String patronymic;
-
-    @Column(name = "floor")
-    private String floor;
-
-    @Column(name = "date_of_birth")
-    private String dateOfBirth;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "passport_series_number")
+    @Column(name = "cерия_и_номер_паспорта_пациента")
     private String passportSeriesNumber;
 
-    @OneToMany(mappedBy = "patientCard")
-    private List<Contract> contractList;
+    @Column(name = "фамилия")
+    private String surname;
+
+    @Column(name = "имя")
+    private String name;
+
+    @Column(name = "отчество")
+    private String patronymic;
+
+    @Column(name = "пол")
+    private String floor;
+
+    @Column(name = "дата_рождения")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "контактный_номер_телефона")
+    private String phoneNumber;
+
+    @ManyToMany(mappedBy = "patientCards")
+    @Column(name = "идентификатор_законного_представ")
+    private List<LegalRepresentative> legalRepresentatives;
 }

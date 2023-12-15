@@ -1,21 +1,27 @@
 package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
-@Table(name = "work_schedule")
+@Table(name = "график_работы")
+@AllArgsConstructor
+@NoArgsConstructor
 public class WorkSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "идентификатор_графика_работы")
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "day_of_week_and_opening_hours_id")
-    private DayOfWeekAndOpeningHours dayOfWeekAndOpeningHours;
-
-    @Column(name = "bet")
-    private int bet;
-
-    @Column(name = "date_of_calculation_bid")
-    private String dateOfCalculationBid;
+    @Column(name = "описание_графика_работы")
+    private String descriptionGraphicWork;
+    @ManyToMany
+    @JoinTable(
+            name = "график_работы_день_неделиивремя",
+            joinColumns = @JoinColumn(name = "идентификатор_графика_работы"),
+            inverseJoinColumns = @JoinColumn(name = "идентификатор_дня_недели_и_времен")
+    )
+    private List<WeekDayAndTime> weekDayAndTimeList;
 }

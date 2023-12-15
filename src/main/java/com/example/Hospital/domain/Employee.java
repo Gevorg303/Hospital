@@ -1,40 +1,39 @@
 package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "работник")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "surname")
+    @Column(name = "серия_и_номер_паспорта")
+    private String passportSeriesNumber;
+    @Column(name = "фамилия")
     private String surname;
 
-    @Column(name = "name")
+    @Column(name = "имя")
     private String name;
 
-    @Column(name = "patronymic")
+    @Column(name = "отчество")
     private String patronymic;
 
-    @Column(name = "phone_number")
+    @Column(name = "номер_телефона")
     private String phoneNumber;
 
-    @Column(name = "date_of_birth")
-    private String dateOfBirth;
+    @Column(name = "дата_рождения")
+    private LocalDate dateOfBirth;
 
-    @Column(name = "passport_series_number")
-    private String passportSeriesNumber;
-
-    @Column(name = "date_of_employment")
-    private String dateOfEmployment;
+    @Column(name = "дата_приема_на_работу")
+    private LocalDate dateOfEmployment;
 
     @ManyToOne
-    @JoinColumn(name = "education_id")
+    @JoinColumn(name = "идентификатор_образования")
     private Education education;
-
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
 }

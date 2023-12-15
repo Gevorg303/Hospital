@@ -1,28 +1,26 @@
 package com.example.Hospital.controllers;
 
 import com.example.Hospital.domain.PatientCard;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import com.example.Hospital.services.PatientCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class PatientCardController {
-    private final PatientCardService patientCardService;
+    @Autowired
+    private PatientCardService patientCardService;
 
     @GetMapping("/")
-    public String patientCard(@RequestParam(name = "id", required = false) Long id, Model model){
-        model.addAttribute("patientCardList", patientCardService.patientCardList(id));
+    public String showAllPatientCards( Model model) {
+        model.addAttribute("patientCardList", patientCardService.patientCardList());
         return "main";
-    }
-
-    @GetMapping("/patientCard/{id}")
-    public String patientCardInfo(@PathVariable Long id, Model model){
-        PatientCard patientCard = patientCardService.getPatientCardById(id);
-        model.addAttribute("patientCard", patientCard);
-        return "patientCard-info";
     }
 
     @PostMapping("/patientCard/create")
@@ -32,9 +30,17 @@ public class PatientCardController {
     }
 
     @PostMapping("/patientCard/delete/{id}")
-    public String deletePatientCard(@PathVariable Long id){
-        patientCardService.deletePatientCard(id);
+    public String deletePatientCard(@PathVariable PatientCard patientCard){
+        patientCardService.deletePatientCard(patientCard);
         return "redirect:/";
     }
 
 }
+
+
+//    @GetMapping("/patientCard/{id}")
+//    public String patientCardInfo(@PathVariable Long id, Model model){
+//        PatientCard patientCard = patientCardService.getPatientCardById(id);
+//        model.addAttribute("patientCard", patientCard);
+//        return "patientCard-info";
+//    }

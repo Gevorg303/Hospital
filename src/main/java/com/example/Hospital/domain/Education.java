@@ -2,19 +2,22 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Entity
-@Table(name = "education")
+@Table(name = "образование")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "идентификатор_образования")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "наименование_образования")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "описание")
     private String description;
 }
