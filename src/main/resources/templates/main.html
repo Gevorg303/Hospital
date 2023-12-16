@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1>Пациент</h1><hr>
+<h1>Пациент</h1>
+<hr>
 <h4>Список всех пациентов</h4>
+
 <#list patientCardList as patientCard>
-    <div>
-        <p><b>${patientCard.surname}</b>${patientCard.name} ${patientCard.patronymic}| <a href="/patientCard/${patientCard.id}">Подробнее...</a></p>
-    </div>
-    <#else>
-    <h3>Пациентов нет</h3>
+<div>
+    <p><b>${patientCard.surname}</b>${patientCard.name} ${patientCard.patronymic}| <a href="/patients/patientCard/${patientCard.id}">Подробнее...</a></p>
+</div>
+<#else>
+<h3>Пациентов нет</h3>
 </#list>
 <hr>
+
 <h3>Добавить пациента</h3>
 
-<form action="/patientCard/create" method="post">
+<form action="/patients/patientCard/create" method="post">
     Фамилия: <input type="text" name="surname"/><br><br>
     Имя: <input type="text" name="name"/><br><br>
     Отчество: <input type="text" name="patronymic"/><br><br>

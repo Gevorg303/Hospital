@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequiredArgsConstructor
+@RequestMapping(value = "/patients")
 public class PatientCardController {
     @Autowired
     private PatientCardService patientCardService;
 
-    @GetMapping("/")
-    public String showAllPatientCards( Model model) {
-        model.addAttribute("patientCardList", patientCardService.patientCardList());
+    @GetMapping(value = "/all")
+    public String patientCards(Model model) {
+        model.addAttribute("карточка_пациента", patientCardService.patientCardList());
         return "main";
     }
 
@@ -36,7 +36,6 @@ public class PatientCardController {
     }
 
 }
-
 
 //    @GetMapping("/patientCard/{id}")
 //    public String patientCardInfo(@PathVariable Long id, Model model){

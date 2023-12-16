@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Getter
 @Table(name = "карточка_пациента")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientCard {
