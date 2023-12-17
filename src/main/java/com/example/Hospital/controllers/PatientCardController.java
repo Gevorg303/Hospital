@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/patients")
 public class PatientCardController {
     @Autowired
     private PatientCardService patientCardService;
 
-    @GetMapping(value = "/all")
+    @GetMapping("/all")
     public String patientCards(Model model) {
-        model.addAttribute("карточка_пациента", patientCardService.patientCardList());
+        model.addAttribute("patientCardList", patientCardService.patientCardList());
         return "main";
     }
 

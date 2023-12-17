@@ -15,6 +15,7 @@ import java.util.List;
 public class PatientCardService {
     @Autowired
     private PatientCardRepository patientCardRepository;
+
     public List<PatientCard> patientCardList(){
         return patientCardRepository.findAll();
     }
