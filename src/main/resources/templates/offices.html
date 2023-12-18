@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Кабинеты</title>
+</head>
+<body>
+<h1>Список кабинетов</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Номер</th>
+        <th>Наименование</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="office : ${officeList}">
+        <td th:text="${office.id}"></td>
+        <td th:text="${office.number}"></td>
+        <td th:text="${office.name}"></td>
+        <td>
+            <form th:action="@{/office/delete/{id}(id=${office.id})}" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Удалить">
+            </form>
+
+
+
+
+
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h3>Добавить кабинет</h3>
+<form action="/office/create" method="post">
+    Номер: <input type="text" name="number"><br>
+    Наименование: <input type="text" name="name"><br>
+    <input type="submit" value="Добавить">
+</form>
+</body>
+</html>

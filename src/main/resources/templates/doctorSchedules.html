@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Графики врачей</title>
+</head>
+<body>
+<h1>Список графиков врачей</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ставка</th>
+        <th>Дата назначения</th>
+        <th>Серия и номер паспорта</th>
+        <th>Специализация</th>
+        <th>Кабинет</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="doctorSchedule : ${doctorSchedules}">
+        <td th:text="${doctorSchedule.id}"></td>
+        <td th:text="${doctorSchedule.bet}"></td>
+        <td th:text="${doctorSchedule.dateOfCalculationBid}"></td>
+        <td th:text="${doctorSchedule.passportSeriesNumber}"></td>
+        <td th:text="${doctorSchedule.specialization.name}"></td>
+        <td th:text="${doctorSchedule.office.name}"></td>
+        <td>
+            <a th:href="@{/doctorSchedules/delete/{id}(id=${doctorSchedule.id})}">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/doctorSchedules/add">Добавить новый график врача</a>
+</body>
+</html>

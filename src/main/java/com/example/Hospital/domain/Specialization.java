@@ -2,10 +2,12 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @Entity
+@Getter
 @Table(name = "специализация")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,7 @@ public class Specialization {
 
     @Column(name = "описание")
     private String description;
+
+    @Column(name = "коэффицент_к_окладу")
+    private double coefficientToSalary;
 }

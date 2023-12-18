@@ -1,44 +1,47 @@
 package com.example.Hospital.controllers;
 
 import com.example.Hospital.domain.PatientCard;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import com.example.Hospital.services.PatientCardService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PatientCardController {
     @Autowired
     private PatientCardService patientCardService;
 
-    @GetMapping("/all")
+    @GetMapping("/patientCardsList")
     public String patientCards(Model model) {
         model.addAttribute("patientCardList", patientCardService.patientCardList());
-        return "main";
+        return "patients";
     }
 
     @PostMapping("/patientCard/create")
-    public String createPatientCard(PatientCard patientCard){
+    public String createPatientCard(PatientCard patientCard, RedirectAttributes redirectAttributes){
         patientCardService.savePatientCard(patientCard);
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("message", "Patient successfully added");
+        return "redirect:/patientCardsList";
     }
 
-    @PostMapping("/patientCard/delete/{id}")
-    public String deletePatientCard(@PathVariable PatientCard patientCard){
+    @DeleteMapping("/patientCard/delete/{id}")
+    public String deletePatientCard(@PathVariable Long id){
+        PatientCard patientCard = patientCardService.getPatientCardById(id);
         patientCardService.deletePatientCard(patientCard);
-        return "redirect:/";
+        return "redirect:/patientCardsList";
     }
+
+    @GetMapping("/patientCard/{passportSeriesNumber}")
+    public String patientCardInfo(@PathVariable String passportSeriesNumber, Model model) {
+        PatientCard patientCard = patientCardService.getPatientCardByPassportNumber(passportSeriesNumber);
+        model.addAttribute("patientCard", patientCard);
+        return "patientCard-info";
+    }
+
+
+
 
 }
 
-//    @GetMapping("/patientCard/{id}")
-//    public String patientCardInfo(@PathVariable Long id, Model model){
-//        PatientCard patientCard = patientCardService.getPatientCardById(id);
-//        model.addAttribute("patientCard", patientCard);
-//        return "patientCard-info";
-//    }

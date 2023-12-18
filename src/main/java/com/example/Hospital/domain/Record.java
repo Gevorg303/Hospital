@@ -23,7 +23,7 @@ public class Record {
     private LocalTime TimeReception;
     @ManyToOne
     @JoinColumn(name = "идентификатор_графика_врача")
-    private Employee employee;
+    private DoctorSchedule doctorSchedule;
     @ManyToOne
     @JoinColumn(name = "идентификатор_карточки_пациента")
     private PatientCard patientCard;
