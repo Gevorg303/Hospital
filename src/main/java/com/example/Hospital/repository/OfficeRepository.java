@@ -23,11 +23,10 @@ public class OfficeRepository {
         return entityManager.createQuery("SELECT o FROM Office o", Office.class).getResultList();
     }
 
-    public void save(Office office) {
-        entityManager.persist(office);
-    }
-
     public void delete(Office office) {
         entityManager.remove(entityManager.contains(office) ? office : entityManager.merge(office));
+    }
+    public void save(Office office) {
+        entityManager.persist(office);
     }
 }

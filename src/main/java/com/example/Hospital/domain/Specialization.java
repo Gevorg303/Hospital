@@ -2,12 +2,14 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @Entity
 @Getter
+@Data
 @Table(name = "специализация")
 @AllArgsConstructor
 @NoArgsConstructor

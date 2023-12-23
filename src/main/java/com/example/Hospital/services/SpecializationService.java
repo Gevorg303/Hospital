@@ -12,7 +12,6 @@ public class SpecializationService {
     @Autowired
     private SpecializationRepository specializationRepository;
 
-
     public List<Specialization> getAllSpecializations() {
         return specializationRepository.findAllSpecializations();
     }
@@ -23,5 +22,15 @@ public class SpecializationService {
 
     public void deleteSpecialization(Long id) {
         specializationRepository.deleteSpecialization(id);
+    }
+
+    public void updateSpecialization(Long id, Specialization specialization) {
+        Specialization existingSpecialization = specializationRepository.findSpecializationById(id);
+        if (existingSpecialization != null) {
+            existingSpecialization.setName(specialization.getName());
+            existingSpecialization.setDescription(specialization.getDescription());
+            existingSpecialization.setCoefficientToSalary(specialization.getCoefficientToSalary());
+            specializationRepository.save(existingSpecialization);
+        }
     }
 }

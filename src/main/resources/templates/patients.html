@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
-
-
+    <form action="/" method="get">
+        <button type="submit">Вернуться на главную</button>
+    </form>
 </head>
 <body>
 <h1>Пациент</h1>
@@ -27,7 +27,7 @@
         <td th:text="${patientCard.surname}"></td>
         <td th:text="${patientCard.name}"></td>
         <td th:text="${patientCard.patronymic}"></td>
-        <td><a th:href="@{/patientCard/{id}(id=${patientCard.passportSeriesNumber})}">Подробнее</a></td>
+        <td><a th:href="@{/patients/patientCard/{id}(id=${patientCard.passportSeriesNumber})}">Подробнее</a></td>
     </tr>
     </tr>
     <tr th:if="${patientCardList.isEmpty()}">
@@ -35,23 +35,27 @@
     </tr>
     </tbody>
 </table>
-
-
 <hr>
-
 <h3>Добавить пациента</h3>
+<!-- Добавьте атрибут required для всех полей, кроме номера телефона -->
+<form action="/patients/patientCard/create" method="post">
+    Фамилия: <input type="text" name="surname" required/><br><br>
+    Имя: <input type="text" name="name" required/><br><br>
+    Отчество: <input type="text" name="patronymic" required/><br><br>
 
-<form action="/patientCard/create" method="post">
-    Фамилия: <input type="text" name="surname"/><br><br>
-    Имя: <input type="text" name="name"/><br><br>
-    Отчество: <input type="text" name="patronymic"/><br><br>
-    Пол: <input type="text" name="floor"/><br><br>
-    Дата рождения: <input type="text" name="dateOfBirth"/><br><br>
+    Пол: <select name="floor" id="floor" required>
+    <option value="Мужской">Мужской</option>
+    <option value="Женский">Женский</option>
+</select><br>
+
+    Дата рождения: <input type="text" name="dateOfBirth" required/><br><br>
     Номер телефона: <input type="text" name="phoneNumber"/><br><br>
-    Серия и номер паспорта: <input type="text" name="passportSeriesNumber"/><br><br>
+    Серия и номер паспорта: <input type="text" name="passportSeriesNumber" required/><br><br>
 
     <input type="submit" value="Добавить пациента">
 </form>
+
+
 
 
 </body>

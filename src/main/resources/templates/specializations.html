@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Специализации</title>
+    <form action="/" method="get">
+        <button type="submit">Вернуться на главную</button>
+    </form>
 </head>
 <body>
 <h1>Список специализаций</h1>
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>Наименование</th>
         <th>Описание</th>
         <th>Коэффициент к окладу</th>
@@ -18,7 +20,6 @@
     </thead>
     <tbody>
     <tr th:each="specialization : ${specializations}">
-        <td th:text="${specialization.id}"></td>
         <td th:text="${specialization.name}"></td>
         <td th:text="${specialization.description}"></td>
         <td th:text="${specialization.coefficientToSalary}"></td>
@@ -32,7 +33,7 @@
     </tbody>
 </table>
 <hr>
-<h3>Добавить специализацию</h3>
+
 <h3>Добавить специализацию</h3>
 <form action="/specializations/add" method="post">
     Наименование: <input type="text" name="name"><br>

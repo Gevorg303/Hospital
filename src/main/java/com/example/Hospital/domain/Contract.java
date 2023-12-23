@@ -2,6 +2,7 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "договор")
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Contract {

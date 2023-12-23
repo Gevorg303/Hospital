@@ -5,38 +5,37 @@ import com.example.Hospital.domain.Office;
 import com.example.Hospital.services.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/offices")
 public class OfficeController {
     @Autowired
     private OfficeService officeService;
 
-    @GetMapping("/offices")
+    @GetMapping("/all")
     public String getAllOffices(Model model) {
         List<Office> officeList = officeService.findAllOffices();
         model.addAttribute("officeList", officeList);
+
+        // Инициализируем новый объект Office для формы
+        model.addAttribute("newOffice", new Office());
+
         return "offices";
     }
 
-    @PostMapping("/office/create")
-    public String createOffice(Office office, RedirectAttributes redirectAttributes) {
-        officeService.saveOffice(office);
-        redirectAttributes.addFlashAttribute("message", "Office successfully added");
-        return "redirect:/offices";
+    @PostMapping("/offices")
+    public String addOffice(@ModelAttribute("newOffice") Office newOffice) {
+        officeService.saveOffice(newOffice);
+        return "redirect:/offices/all";
     }
 
-    @DeleteMapping("/office/delete/{id}")
+    @PostMapping("/office/delete/{id}")
     public String deleteOffice(@PathVariable Long id) {
         officeService.deleteOfficeById(id);
-        return "redirect:/offices";
+        return "redirect:/offices/all";
     }
-
-
 }

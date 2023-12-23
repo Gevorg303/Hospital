@@ -25,9 +25,13 @@ public class SpecializationRepository {
     }
 
     public void deleteSpecialization(Long id) {
-        Specialization specialization = entityManager.find(Specialization.class, id);
+        Specialization specialization = findSpecializationById(id);
         if (specialization != null) {
             entityManager.remove(specialization);
         }
+    }
+
+    public Specialization findSpecializationById(Long id) {
+        return entityManager.find(Specialization.class, id);
     }
 }

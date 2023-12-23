@@ -2,6 +2,8 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "законный_представитель")
 @AllArgsConstructor
+@Data
+@Getter
 @NoArgsConstructor
 public class LegalRepresentative {
     @Id

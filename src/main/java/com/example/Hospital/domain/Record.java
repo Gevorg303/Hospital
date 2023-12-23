@@ -2,6 +2,7 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 @Table(name = "запись")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

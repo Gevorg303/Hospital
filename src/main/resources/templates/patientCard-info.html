@@ -1,29 +1,89 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Информация о пациенте</title>
 </head>
 <body>
 <h1>Пациент</h1>
 <hr>
 <h4>Подробная информация</h4>
 
-<b>Фамилия:</b> <span th:text="${patientCard.surname}"></span><br>
-<b>Имя:</b> <span th:text="${patientCard.name}"></span><br>
-<b>Отчество:</b> <span th:text="${patientCard.patronymic}"></span><br>
-<b>Пол:</b> <span th:text="${patientCard.floor}"></span><br>
-<b>Дата рождения:</b> <span th:text="${patientCard.dateOfBirth}"></span><br>
-<b>Номер телефона:</b> <span th:text="${patientCard.phoneNumber}"></span><br>
-<b>Фамилия пациента:</b> <span th:text="${patientCard.passportSeriesNumber}"></span><br>
+<b>Фамилия:</b> <span th:text="${patient.surname}"></span><br>
+<b>Имя:</b> <span th:text="${patient.name}"></span><br>
+<b>Отчество:</b> <span th:text="${patient.patronymic}"></span><br>
+<b>Пол:</b> <span th:text="${patient.floor}"></span><br>
+<b>Дата рождения:</b> <span th:text="${patient.dateOfBirth}"></span><br>
+<b>Номер телефона:</b> <span th:text="${patient.phoneNumber}"></span><br>
+<b>Серия и номер паспорта:</b> <span th:text="${patient.passportSeriesNumber}"></span><br>
 
 <hr>
-<form action="/patientCard/delete/${patientCard.id}" method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="submit" value="Удалить пациента">
+
+<h4>Редактировать данные пациента</h4>
+<form action="/patients/patientCard/edit" method="post">
+    <input type="hidden" th:field="*{passportSeriesNumber}" />
+
+    <label for="surname">Фамилия:</label>
+    <input type="text" id="surname" name="surname" th:value="${patient.surname}" /><br>
+
+    <label for="name">Имя:</label>
+    <input type="text" id="name" name="name" th:value="${patient.name}" /><br>
+
+    <label for="patronymic">Отчество:</label>
+    <input type="text" id="patronymic" name="patronymic" th:value="${patient.patronymic}" /><br>
+
+    <label for="floor">Пол:</label>
+    <select id="floor" name="floor">
+        <option th:each="f : ${floor}" th:value="${f}" th:text="${f}" th:selected="${f == patient.floor}"></option>
+    </select><br>
+
+    <label for="dateOfBirth">Дата рождения:</label>
+    <input type="date" id="dateOfBirth" name="dateOfBirth" th:value="${patient.dateOfBirth}" /><br>
+
+    <label for="phoneNumber">Номер телефона:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:value="${patient.phoneNumber}" /><br>
+
+    <label for="passportSeriesNumber">Серия и номер паспорта:</label>
+    <input type="text" id="passportSeriesNumber" name="passportSeriesNumber" th:value="${patient.passportSeriesNumber}" /><br>
+
+    <input type="submit" value="Сохранить изменения">
+</form>
+
+<hr>
+
+<form action="/patients/delete/{passportSeriesNumber}" method="get">
+    <input type="hidden" name="passportSeriesNumber" th:value="${patient.passportSeriesNumber}" />
+    <input type="submit" value="Удалить" onclick="return confirm('Вы уверены?')" />
 </form>
 
 
 
 
+
+
+
+<script>
+    // Код для обработки редактирования пациента
+    document.querySelector('form[action="/patients/patientCard/edit"]').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(formData).toString()
+        }).then(response => {
+            if (response.ok) {
+                alert('Данные пациента успешно обновлены');
+                window.location.reload();
+            } else {
+                alert('Ошибка при обновлении данных пациента');
+            }
+        });
+    });
+</script>
 </body>
 </html>

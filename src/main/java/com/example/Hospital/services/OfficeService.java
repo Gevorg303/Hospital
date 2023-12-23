@@ -1,6 +1,7 @@
 package com.example.Hospital.services;
 
 import com.example.Hospital.domain.Office;
+import com.example.Hospital.repository.DoctorScheduleRepository;
 import com.example.Hospital.repository.OfficeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import java.util.List;
 public class OfficeService {
     @Autowired
     private OfficeRepository officeRepository;
+    @Autowired
+    private DoctorScheduleRepository doctorScheduleRepository;
 
     public Office findOfficeById(Long id) {
         return officeRepository.findById(id);
@@ -24,14 +27,22 @@ public class OfficeService {
         return officeRepository.findAll();
     }
 
-    public void saveOffice(Office office) {
-        officeRepository.save(office);
-    }
-
     public void deleteOfficeById(Long id) {
         Office office = officeRepository.findById(id);
         if (office != null) {
-            officeRepository.delete(office);
+            // Проверка, используется ли кабинет в DoctorSchedule
+            boolean isOfficeUsed = doctorScheduleRepository.isOfficeUsed(office);
+
+            if (!isOfficeUsed) {
+                officeRepository.delete(office);
+            } else {
+                // Обработка случая, когда кабинет используется
+                log.info("Невозможно удалить кабинет, так как он связан с расписанием врачей.");
+                // Можно выбросить исключение, записать сообщение в логи или обработать иначе в зависимости от логики приложения.
+            }
         }
+    }
+    public void saveOffice(Office office) {
+        officeRepository.save(office);
     }
 }

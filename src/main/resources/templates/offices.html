@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Кабинеты</title>
+    <form action="/" method="get">
+        <button type="submit">Вернуться на главную</button>
+    </form>
 </head>
 <body>
 <h1>Список кабинетов</h1>
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>Номер</th>
         <th>Наименование</th>
         <th>Действия</th>
@@ -17,20 +19,12 @@
     </thead>
     <tbody>
     <tr th:each="office : ${officeList}">
-        <td th:text="${office.id}"></td>
         <td th:text="${office.number}"></td>
         <td th:text="${office.name}"></td>
         <td>
-            <form th:action="@{/office/delete/{id}(id=${office.id})}" method="post">
-                <input type="hidden" name="_method" value="DELETE">
+            <form th:action="@{/office/delete/{id}(id=${office.id})}" th:method="post">
                 <input type="submit" value="Удалить">
             </form>
-
-
-
-
-
-
         </td>
     </tr>
     </tbody>
@@ -39,10 +33,11 @@
 <hr>
 
 <h3>Добавить кабинет</h3>
-<form action="/office/create" method="post">
-    Номер: <input type="text" name="number"><br>
-    Наименование: <input type="text" name="name"><br>
+<form th:action="@{/offices}" method="post" th:object="${newOffice}">
+    Номер: <input type="text" th:field="*{number}" name="number" placeholder="" required><br>
+    Наименование: <input type="text" th:field="*{name}" name="name" required><br>
     <input type="submit" value="Добавить">
 </form>
+
 </body>
 </html>
