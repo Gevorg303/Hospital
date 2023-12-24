@@ -3,11 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Графики врачей</title>
-    <form action="/" method="get">
-        <button type="submit">Вернуться на главную</button>
-    </form>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+
+        button[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+    </style>
 </head>
 <body>
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Вернуться на главную</button>
+</form>
 <h1>Список графиков врачей</h1>
 
 <table>
@@ -16,7 +83,7 @@
         <th>ID</th>
         <th>Ставка</th>
         <th>Дата назначения</th>
-        <th>Серия и номер паспорта</th>
+        <th>Серия и номер паспорта врача</th>
         <th>Специализация</th>
         <th>Кабинет</th>
         <th>Действия</th>
@@ -29,7 +96,7 @@
         <td th:text="${doctorSchedule.dateOfCalculationBid}"></td>
         <td th:text="${doctorSchedule.passportSeriesNumber}"></td>
         <td th:text="${doctorSchedule.specialization.name}"></td>
-        <td th:text="${doctorSchedule.office.name}"></td>
+        <td th:text="${doctorSchedule.office.number}"></td>
         <td>
             <a th:href="@{/doctorSchedules/delete/{id}(id=${doctorSchedule.id})}">Удалить</a>
         </td>

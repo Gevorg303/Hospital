@@ -2,16 +2,106 @@
 <html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <form action="/" method="get">
-        <button type="submit">Вернуться на главную</button>
-    </form>
+    <title>Список пациентов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td:nth-child(4) {
+            text-align: center;
+        }
+
+        button[type="submit"], input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover, input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        form {
+            margin-top: 30px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        form > div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], select {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        select {
+            width: 100%;
+        }
+        #addForm {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+        h3{
+        text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1>Пациент</h1>
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Вернуться на главную</button>
+</form>
+<h1>Список пациентов</h1>
 <hr>
-<h4>Список всех пациентов</h4>
-
 
 <table>
     <thead>
@@ -29,34 +119,48 @@
         <td th:text="${patientCard.patronymic}"></td>
         <td><a th:href="@{/patients/patientCard/{id}(id=${patientCard.passportSeriesNumber})}">Подробнее</a></td>
     </tr>
-    </tr>
     <tr th:if="${patientCardList.isEmpty()}">
         <td colspan="4">Пациентов нет</td>
     </tr>
     </tbody>
 </table>
 <hr>
+<div id="addForm">
 <h3>Добавить пациента</h3>
-<!-- Добавьте атрибут required для всех полей, кроме номера телефона -->
 <form action="/patients/patientCard/create" method="post">
-    Фамилия: <input type="text" name="surname" required/><br><br>
-    Имя: <input type="text" name="name" required/><br><br>
-    Отчество: <input type="text" name="patronymic" required/><br><br>
-
-    Пол: <select name="floor" id="floor" required>
-    <option value="Мужской">Мужской</option>
-    <option value="Женский">Женский</option>
-</select><br>
-
-    Дата рождения: <input type="text" name="dateOfBirth" required/><br><br>
-    Номер телефона: <input type="text" name="phoneNumber"/><br><br>
-    Серия и номер паспорта: <input type="text" name="passportSeriesNumber" required/><br><br>
-
+    <div>
+        <label for="surname">Фамилия:</label>
+        <input type="text" id="surname" name="surname" required/>
+    </div>
+    <div>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required/>
+    </div>
+    <div>
+        <label for="patronymic">Отчество:</label>
+        <input type="text" id="patronymic" name="patronymic" required/>
+    </div>
+    <div>
+        <label for="floor">Пол:</label>
+        <select name="floor" id="floor" required>
+            <option value="Мужской">Мужской</option>
+            <option value="Женский">Женский</option>
+        </select>
+    </div>
+    <div>
+        <label for="dateOfBirth">Дата рождения:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" required/>
+    </div>
+    <div>
+        <label for="phoneNumber">Номер телефона:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber"/>
+    </div>
+    <div>
+        <label for="passportSeriesNumber">Серия и номер паспорта:</label>
+        <input type="text" id="passportSeriesNumber" name="passportSeriesNumber" required/>
+    </div>
     <input type="submit" value="Добавить пациента">
 </form>
-
-
-
-
+</div>
 </body>
 </html>

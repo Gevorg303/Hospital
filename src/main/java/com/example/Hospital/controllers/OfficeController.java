@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+
 @Controller
 @RequestMapping("/offices")
 public class OfficeController {
@@ -27,15 +28,27 @@ public class OfficeController {
         return "offices";
     }
 
-    @PostMapping("/offices")
-    public String addOffice(@ModelAttribute("newOffice") Office newOffice) {
-        officeService.saveOffice(newOffice);
+    @PostMapping("/add")
+    public String addOffice(@ModelAttribute("newOffice") Office newOffice, RedirectAttributes redirectAttributes) {
+        try {
+            officeService.saveOffice(newOffice);
+            redirectAttributes.addFlashAttribute("message", "Кабинет успешно добавлен");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ошибка при добавлении кабинета: " + e.getMessage());
+        }
         return "redirect:/offices/all";
     }
 
-    @PostMapping("/office/delete/{id}")
-    public String deleteOffice(@PathVariable Long id) {
-        officeService.deleteOfficeById(id);
+    @PostMapping("/delete/{id}")
+    public String deleteOffice(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            officeService.deleteOfficeById(id);
+            redirectAttributes.addFlashAttribute("message", "Кабинет успешно удален");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ошибка при удалении кабинета: " + e.getMessage());
+        }
         return "redirect:/offices/all";
     }
+
 }
+

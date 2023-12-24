@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вызов функции из базы данных</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Вернуться на главную</button>
+</form>
+<button id="callFunction">Посчитать количество работников с высшим образованием</button>
+<div id="result"></div>
+
+<button id="numberOfPediatricians">Количество врачей со специализацией педиатр</button>
+<div id="result1"></div>
+
+<script>
+    $(document).ready(function(){
+      $("#callFunction").click(function(){
+        $.ajax({
+          url: '/callFunction',
+          type: 'GET',
+          success: function(response) {
+            $("#result").text("Результат: " + response);
+          }
+        });
+      });
+    });
+
+    $(document).ready(function(){
+      $("#numberOfPediatricians").click(function(){
+        $.ajax({
+          url: '/numberOfPediatricians',
+          type: 'GET',
+          success: function(response) {
+            $("#result1").text("Результат: " + response);
+          }
+        });
+      });
+    });
+</script>
+</body>
+</html>

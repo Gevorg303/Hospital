@@ -3,33 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>Информация об образовании</title>
-    <form action="/" method="get">
-        <button type="submit">Вернуться на главную</button>
-    </form>
-    <script>
-        function confirmDelete() {
-            return confirm("Вы уверены, что хотите удалить это образование?");
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
         }
 
-        function showError() {
-            alert("Это образование используется в таблице сотрудников и не может быть удалено.");
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        function validateForm() {
-            var name = document.getElementById("name").value;
-            if (name === "") {
-                alert("Пожалуйста, заполните поле 'Наименование'.");
-                return false;
-            }
-            // Добавьте другие проверки, если необходимо
-            return true;
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         }
-    </script>
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #addForm {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        h2{
+        text-align: center;
+        }
+    </style>
 </head>
 <body>
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Вернуться на главную</button>
+</form>
 <h1>Информация об образовании</h1>
 
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>Наименование</th>
@@ -42,8 +102,7 @@
         <td th:text="${education.name}"></td>
         <td th:text="${education.description}"></td>
         <td>
-            <a th:href="@{'/education/delete/' + ${education.id}}"
-               onclick="return confirmDelete()">Удалить</a>
+            <a th:href="@{'/education/delete/' + ${education.id}}" onclick="return confirmDelete()">Удалить</a>
         </td>
     </tr>
     <tr th:if="${educationList.isEmpty()}">
@@ -62,8 +121,26 @@
     </form>
 </div>
 
-<script th:if="${deletionError}">
-    showError();
+<script>
+    function confirmDelete() {
+        return confirm("Вы уверены, что хотите удалить это образование?");
+    }
+
+    function showError() {
+        alert("Это образование используется в таблице сотрудников и не может быть удалено.");
+    }
+
+    function validateForm() {
+        var name = document.getElementById("name").value;
+        if (name === "") {
+            alert("Пожалуйста, заполните поле 'Наименование'.");
+            return false;
+        }
+        // Добавьте другие проверки, если необходимо
+        return true;
+    }
+
+    th:if="${deletionError}" && showError();
 </script>
 </body>
 </html>

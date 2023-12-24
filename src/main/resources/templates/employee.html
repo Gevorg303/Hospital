@@ -3,11 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>Информация о сотрудниках</title>
-    <form action="/" method="get">
-        <button type="submit">Вернуться на главную</button>
-    </form>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button[type="submit"], input[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover, input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], select, input[type="date"] {
+            width: 500px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        select {
+            width: 100%;
+        }
+        #addForm {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+        h5{
+        text-align: center;
+        }
+    </style>
 </head>
 <body>
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Вернуться на главную</button>
+</form>
 <h1>Информация о сотрудниках</h1>
 <table border="1">
     <thead>
@@ -42,6 +125,8 @@
     </tr>
     </tbody>
 </table>
+<div id="addForm">
+    <h5>Добавить сотрудника</h5>
 <form action="/employee/add" method="post">
     <label for="passportSeriesNumber">Серия и номер паспорта:</label>
     <input type="text" id="passportSeriesNumber" name="passportSeriesNumber" required/><br>
@@ -56,7 +141,7 @@
     <input type="text" id="patronymic" name="patronymic" required/><br>
 
     <label for="phoneNumber">Номер телефона:</label>
-    <input type="text" id="phoneNumber" name="phoneNumber" /><br>
+    <input type="text" id="phoneNumber" name="phoneNumber"/><br>
 
     <label for="dateOfBirth">Дата рождения:</label>
     <input type="date" id="dateOfBirth" name="dateOfBirth" required/><br>
@@ -74,6 +159,7 @@
 
     <input type="submit" value="Добавить сотрудника">
 </form>
+</div>
 
 </body>
 </html>

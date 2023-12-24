@@ -3,8 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>Информация о пациенте</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="submit"],
+        select {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        button[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        b {
+            font-weight: bold;
+        }
+         #addForm {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+        h4{
+        text-align: center;
+        }
+    </style>
 </head>
 <body>
+<form action="/patients/patientCardsList" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Назад</button>
+</form>
 <h1>Пациент</h1>
 <hr>
 <h4>Подробная информация</h4>
@@ -18,7 +104,7 @@
 <b>Серия и номер паспорта:</b> <span th:text="${patient.passportSeriesNumber}"></span><br>
 
 <hr>
-
+<div id="addForm">
 <h4>Редактировать данные пациента</h4>
 <form action="/patients/patientCard/edit" method="post">
     <input type="hidden" th:field="*{passportSeriesNumber}" />
@@ -48,42 +134,13 @@
 
     <input type="submit" value="Сохранить изменения">
 </form>
+</div>
 
 <hr>
 
 <form action="/patients/delete/{passportSeriesNumber}" method="get">
     <input type="hidden" name="passportSeriesNumber" th:value="${patient.passportSeriesNumber}" />
-    <input type="submit" value="Удалить" onclick="return confirm('Вы уверены?')" />
+    <button type="submit" onclick="return confirm('Вы уверены?')">Удалить</button>
 </form>
-
-
-
-
-
-
-
-<script>
-    // Код для обработки редактирования пациента
-    document.querySelector('form[action="/patients/patientCard/edit"]').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-
-        fetch(this.action, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams(formData).toString()
-        }).then(response => {
-            if (response.ok) {
-                alert('Данные пациента успешно обновлены');
-                window.location.reload();
-            } else {
-                alert('Ошибка при обновлении данных пациента');
-            }
-        });
-    });
-</script>
 </body>
 </html>
