@@ -1,5 +1,6 @@
 package com.example.Hospital.repository;
 
+import com.example.Hospital.domain.Education;
 import com.example.Hospital.domain.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -19,40 +20,24 @@ public class EmployeeRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<Employee> findAll() {
-        return entityManager.createQuery("SELECT e FROM Employee e", Employee.class).getResultList();
+    public List<Employee> getAllEmployees() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+        Root<Employee> rootEntry = cq.from(Employee.class);
+        CriteriaQuery<Employee> all = cq.select(rootEntry);
+        TypedQuery<Employee> allQuery = entityManager.createQuery(all);
+        return allQuery.getResultList();
     }
-
-    public Employee findByPassportSeriesNumber(String passportSeriesNumber) {
-        TypedQuery<Employee> query = entityManager.createQuery(
-                        "SELECT e FROM Employee e WHERE e.passportSeriesNumber = :passportSeriesNumber", Employee.class)
-                .setParameter("passportSeriesNumber", passportSeriesNumber);
-
-        List<Employee> resultList = query.getResultList();
-        return resultList.isEmpty() ? null : resultList.get(0);
-    }
-
-    public void save(Employee employee) {
+    @Transactional
+    public void addEmployee(Employee employee) {
         entityManager.persist(employee);
     }
-
-    public void update(Employee employee) {
-        entityManager.merge(employee);
-    }
-
-    public void delete(String passportSeriesNumber) {
-        Employee employee = findByPassportSeriesNumber(passportSeriesNumber);
+    @Transactional
+    public void deleteEmployee(String passportSeriesNumber) {
+        Employee employee = entityManager.find(Employee.class, passportSeriesNumber);
         if (employee != null) {
             entityManager.remove(employee);
         }
     }
-    public void deleteByPassportSeriesNumber(String passportSeriesNumber) {
-        Query query = entityManager.createQuery(
-                        "DELETE FROM Employee e WHERE e.passportSeriesNumber = :passportSeriesNumber")
-                .setParameter("passportSeriesNumber", passportSeriesNumber);
-
-        query.executeUpdate();
-    }
 }
-
 

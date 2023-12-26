@@ -21,10 +21,7 @@ public class OfficeController {
     public String getAllOffices(Model model) {
         List<Office> officeList = officeService.findAllOffices();
         model.addAttribute("officeList", officeList);
-
-        // Инициализируем новый объект Office для формы
         model.addAttribute("newOffice", new Office());
-
         return "offices";
     }
 

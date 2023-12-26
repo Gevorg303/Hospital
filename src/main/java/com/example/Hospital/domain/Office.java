@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

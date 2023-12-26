@@ -4,40 +4,428 @@
     <title>Вызов функции из базы данных</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<style>
+    button {
+        display: block;
+        margin: 20px auto;
+        padding: 12px 24px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Стили для блоков результатов */
+    #result, #result1, #result2, #result3, #result4, #result5, #result6, #result7, #result8, #result9 {
+        margin: 0 auto 20px;
+        padding: 10px 20px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: #f5f5f5;
+    }
+</style>
 <body>
 <form action="/" method="get" style="margin-bottom: 20px;">
     <button type="submit">Вернуться на главную</button>
 </form>
-<button id="callFunction">Посчитать количество работников с высшим образованием</button>
-<div id="result"></div>
 
-<button id="numberOfPediatricians">Количество врачей со специализацией педиатр</button>
-<div id="result1"></div>
+<form id="dateForm" action="/call-function" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callDatabaseFunction()">Сколько работников с высшим образованием было принято на работу в данный промежуток времени</button>
+    <label for="startDate">Начальная дата:</label>
+    <input type="date" id="startDate" name="startDate" required>
+    <label for="endDate">Конечная дата:</label>
+    <input type="date" id="endDate" name="endDate" required>
+</form>
+<div id="result" style="display: none;"></div>
+
+
+<form id="doctorForm" action="/call-doctors-function" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callDoctorFunction()">Сколько врачей было принято на работу в данный промежуток времени</button>
+    <label for="start_date_1">Начальная дата:</label>
+    <input type="date" id="start_date_1" name="start_date_1" required>
+    <label for="end_date_1">Конечная дата:</label>
+    <input type="date" id="end_date_1" name="end_date_1" required>
+</form>
+<div id="doctorResult" style="display: none;"></div>
+
+
+<form id="specializationForm" action="/call-doctors-by-specialization" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callDoctorsBySpecializationFunction()">Сколько врачей с выбранной специализацией и временным промежутком когда был принят на работу
+    </button>
+    <label for="specialization_name">Специализация:</label>
+    <input type="text" id="specialization_name" name="specialization_name" required>
+    <label for="start_date_2">Начальная дата:</label>
+    <input type="date" id="start_date_2" name="start_date" required>
+    <label for="end_date_2">Конечная дата:</label>
+    <input type="date" id="end_date_2" name="end_date" required>
+</form>
+<div id="specializationResult" style="display: none;"></div>
+
+
+<form id="femalePatientsForm" action="/call-female-patients" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callFemalePatientsFunction()">Сколько пациентов женщин были на записи в определенную дату</button>
+    <label for="appointment_date">Дата приема:</label>
+    <input type="date" id="appointment_date" name="appointment_date" required>
+</form>
+<div id="femalePatientsResult" style="display: none;"></div>
+
+
+<form id="employeesWithEducationForm" action="/call-employees-with-education" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callEmployeesWithEducationFunction()">Сколько сотрудников с высшим неполным образованием было принято до указанного года</button>
+    <label for="year">Год:</label>
+    <input type="number" id="year" name="year" required>
+</form>
+<div id="employeesWithEducationResult" style="display: none;"></div>
+
+
+<form id="expensiveServicesWithoutResultsForm" action="/call-expensive-services-without-results" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callExpensiveServicesWithoutResultsFunction()">Сколько услуг превышают выбранную стоимость, где результаты отсутствуют в заданном интервале времени</button>
+    <label for="cost">Стоимость (в рублях):</label>
+    <input type="number" id="cost" name="cost" required>
+    <label for="start_date_service">Начальная дата оказания услуги:</label>
+    <input type="date" id="start_date_service" name="start_date_service" required>
+    <label for="end_date_service">Конечная дата оказания услуги:</label>
+    <input type="date" id="end_date_service" name="end_date_service" required>
+</form>
+<div id="expensiveServicesWithoutResultsResult" style="display: none;"></div>
+
+
+<form id="patientsWithoutPhoneOver18Form" action="/call-patients-without-phone-over-18" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callPatientsWithoutPhoneOver18Function()">У скольких пациентов нет контактного номера телефона и им больше 18 лет с записями в течение выбранного временного промежутка</button>
+    <label for="start_date_record">Начальная дата записи:</label>
+    <input type="date" id="start_date_record" name="start_date_record" required>
+    <label for="end_date_record">Конечная дата записи:</label>
+    <input type="date" id="end_date_record" name="end_date_record" required>
+</form>
+<div id="patientsWithoutPhoneOver18Result" style="display: none;"></div>
+
+
+<form id="patientsWithMoreThanTwoAppointmentsForm" action="/call-patients-with-more-than-2-appointments" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callPatientsWithMoreThanTwoAppointmentsFunction()">У скольких пациентов более введенного количество записей ко врачу за выбранный промежуток времени</button>
+    <label for="appointments_count">Количество записей:</label>
+    <input type="number" id="appointments_count" name="appointments_count" min="3" required>
+    <label for="start_date_record">Начальная дата записи:</label>
+    <input type="date" id="start_date_record1" name="start_date_record" required>
+    <label for="end_date_record">Конечная дата записи:</label>
+    <input type="date" id="end_date_record1" name="end_date_record" required>
+</form>
+<div id="patientsWithMoreThanTwoAppointmentsResult" style="display: none;"></div>
+
+
+<form id="patientsWithMoreThanOneContractForm" action="/call-patients-with-more-than-1-contract" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callPatientsWithMoreThanOneContractFunction()">У скольких пациентов более введенного количества договоров за выбранный промежуток времени</button>
+    <label for="contracts_count">Количество договоров:</label>
+    <input type="number" id="contracts_count" name="contracts_count" min="2" required>
+    <label for="start_date_contract">Начальная дата договора:</label>
+    <input type="date" id="start_date_contract" name="start_date_contract" required>
+    <label for="end_date_contract">Конечная дата договора:</label>
+    <input type="date" id="end_date_contract" name="end_date_contract" required>
+</form>
+<div id="patientsWithMoreThanOneContractResult" style="display: none;"></div>
+
+
+<form id="qualifiedEmployeesForm" action="/call-qualified-employees" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callQualifiedEmployeesFunction()">У какого количества работников ставка и коэффициент больше или равен 1 по данному промежутку времени</button>
+    <label for="start_date_accepted">Начальная дата принятия на работу:</label>
+    <input type="date" id="start_date_accepted" name="start_date_accepted" required>
+    <label for="end_date_accepted">Конечная дата принятия на работу:</label>
+    <input type="date" id="end_date_accepted" name="end_date_accepted" required>
+</form>
+<div id="qualifiedEmployeesResult" style="display: none;"></div>
+
 
 <script>
-    $(document).ready(function(){
-      $("#callFunction").click(function(){
-        $.ajax({
-          url: '/callFunction',
-          type: 'GET',
-          success: function(response) {
-            $("#result").text("Результат: " + response);
-          }
-        });
-      });
-    });
+    function callDatabaseFunction() {
+      var startDate = $('#startDate').val();
+      var endDate = $('#endDate').val();
 
-    $(document).ready(function(){
-      $("#numberOfPediatricians").click(function(){
-        $.ajax({
-          url: '/numberOfPediatricians',
+      $.ajax({
           type: 'GET',
-          success: function(response) {
-            $("#result1").text("Результат: " + response);
+          url: '/call-function',
+          data: {
+              start_date: startDate,
+              end_date: endDate
+          },
+          success: function (response) {
+              console.log("Response:", response);
+
+              // Check if the response is an object
+              if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                  $('#result').html('Количество работников: ' + response.result);
+                  $('#result').show();
+              } else {
+                  console.error('Unexpected response format:', response);
+              }
+          },
+          error: function (error) {
+              console.error('Error calling database function:', error);
           }
-        });
       });
-    });
+  }
+
+
+function callDoctorFunction() {
+        var startDate = $('#start_date_1').val();
+        var endDate = $('#end_date_1').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-doctors-function',
+            data: {
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#doctorResult').html('Количество врачей: ' + response.result);
+                    $('#doctorResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для врачей из базы данных:', error);
+            }
+        });
+    }
+
+
+    function callDoctorsBySpecializationFunction() {
+        var specializationName = $('#specialization_name').val();
+        var startDate = $('#start_date_2').val();
+        var endDate = $('#end_date_2').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-doctors-by-specialization',
+            data: {
+                specialization_name: specializationName,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#specializationResult').html('Количество врачей по специализации: ' + response.result);
+                    $('#specializationResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для врачей по специализации из базы данных:', error);
+            }
+        });
+    }
+
+
+     function callFemalePatientsFunction() {
+        var appointmentDate = $('#appointment_date').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-female-patients',
+            data: {
+                appointment_date: appointmentDate
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#femalePatientsResult').html('Количество женщин на приеме: ' + response.result);
+                    $('#femalePatientsResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для подсчета женщин на приеме из базы данных:', error);
+            }
+        });
+    }
+
+
+     function callEmployeesWithEducationFunction() {
+        var year = $('#year').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-employees-with-education',
+            data: {
+                year: year
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#employeesWithEducationResult').html('Количество сотрудников с высшим неполным образованием до указанного года: ' + response.result);
+                    $('#employeesWithEducationResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для подсчета сотрудников с высшим неполным образованием из базы данных:', error);
+            }
+        });
+    }
+
+    function callExpensiveServicesWithoutResultsFunction() {
+        var cost = $('#cost').val();
+        var startDateService = $('#start_date_service').val();
+        var endDateService = $('#end_date_service').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-expensive-services-without-results',
+            data: {
+                cost: cost,
+                start_date_service: startDateService,
+                end_date_service: endDateService
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#expensiveServicesWithoutResultsResult').html('Количество дорогих услуг без результатов в указанный период: ' + response.result);
+                    $('#expensiveServicesWithoutResultsResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для подсчета дорогих услуг без результатов из базы данных:', error);
+            }
+        });
+    }
+
+
+    function callPatientsWithoutPhoneOver18Function() {
+        var startDateRecord = $('#start_date_record').val();
+        var endDateRecord = $('#end_date_record').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-patients-without-phone-over-18',
+            data: {
+                start_date_record: startDateRecord,
+                end_date_record: endDateRecord
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#patientsWithoutPhoneOver18Result').html('Количество пациентов старше 18 лет без контактного телефона в указанный период: ' + response.result);
+                    $('#patientsWithoutPhoneOver18Result').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для подсчета пациентов старше 18 лет без контактного телефона из базы данных:', error);
+            }
+        });
+    }
+
+
+     function callQualifiedEmployeesFunction() {
+        var startDateAccepted = $('#start_date_accepted').val();
+        var endDateAccepted = $('#end_date_accepted').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-qualified-employees',
+            data: {
+                start_date_accepted: startDateAccepted,
+                end_date_accepted: endDateAccepted
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#qualifiedEmployeesResult').html('Количество квалифицированных сотрудников, принятых на работу в указанный период: ' + response.result);
+                    $('#qualifiedEmployeesResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для подсчета квалифицированных сотрудников из базы данных:', error);
+            }
+        });
+    }
+
+     function callPatientsWithMoreThanTwoAppointmentsFunction() {
+        var appointmentsCount = $('#appointments_count').val();
+        var startDateRecord = $('#start_date_record1').val();
+        var endDateRecord = $('#end_date_record1').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-patients-with-more-than-2-appointments',
+            data: {
+                appointments_count: appointmentsCount,
+                start_date_record: startDateRecord,
+                end_date_record: endDateRecord
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#patientsWithMoreThanTwoAppointmentsResult').html('Количество пациентов с более чем двумя записями к врачу в указанный период: ' + response.result);
+                    $('#patientsWithMoreThanTwoAppointmentsResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для подсчета пациентов с более чем двумя записями к врачу из базы данных:', error);
+            }
+        });
+    }
+
+    function callPatientsWithMoreThanOneContractFunction() {
+        var contractsCount = $('#contracts_count').val();
+        var startDateContract = $('#start_date_contract').val();
+        var endDateContract = $('#end_date_contract').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/call-patients-with-more-than-1-contract',
+            data: {
+                contracts_count: contractsCount,
+                start_date_contract: startDateContract,
+                end_date_contract: endDateContract
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                    $('#patientsWithMoreThanOneContractResult').html('Количество пациентов с более чем одним договором в указанный период: ' + response.result);
+                    $('#patientsWithMoreThanOneContractResult').show();
+                } else {
+                    console.error('Неожиданный формат ответа:', response);
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции для подсчета пациентов с более чем одним договором из базы данных:', error);
+            }
+        });
+    }
 </script>
 </body>
 </html>

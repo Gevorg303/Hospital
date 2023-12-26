@@ -16,7 +16,7 @@ import java.util.List;
 public class EducationService {
 
     @Autowired
-    private EducationRepository educationRepository; // Подставьте ваш репозиторий образования
+    private EducationRepository educationRepository;
 
     public List<Education> getAllEducations() {
         return educationRepository.findAll();
@@ -34,7 +34,6 @@ public class EducationService {
     public void updateEducation(Long id, Education education) {
         Education existingEducation = educationRepository.findById(id);
         if (existingEducation != null) {
-            // Обновление данных образования
             existingEducation.setName(education.getName());
             existingEducation.setDescription(education.getDescription());
             educationRepository.save(existingEducation);

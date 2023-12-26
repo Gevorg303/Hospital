@@ -22,9 +22,9 @@ public class DoctorWithSpecializationPerformingServiceConsultation {
     private Long id;
     @Column(name = "результаты")
     private String results;
-    @Column(name = "дата_сдачи_анализа")
+    @Column(name = "дата_оказания_услуги")
     private LocalDate dateOfAnalysis;
-    @Column(name = "время_сдачи_анализа")
+    @Column(name = "время_оказания_услуги")
     private LocalTime timeOfAnalysis;
     @ManyToOne
     @JoinColumn(name = "идентификатор_услуги")

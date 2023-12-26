@@ -2,6 +2,7 @@ package com.example.Hospital.services;
 
 import com.example.Hospital.domain.Employee;
 import com.example.Hospital.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,29 +19,14 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return employeeRepository.getAllEmployees();
     }
-
+    @Transactional
     public void addEmployee(Employee employee) {
-        employeeRepository.save(employee);
+        employeeRepository.addEmployee(employee);
     }
-
-    public void updateEmployee(String passportSeriesNumber, Employee employee) {
-        Employee existingEmployee = employeeRepository.findByPassportSeriesNumber(passportSeriesNumber);
-        if (existingEmployee != null) {
-            // Обновление данных сотрудника
-            existingEmployee.setSurname(employee.getSurname());
-            existingEmployee.setName(employee.getName());
-            existingEmployee.setPatronymic(employee.getPatronymic());
-            existingEmployee.setPhoneNumber(employee.getPhoneNumber());
-            existingEmployee.setDateOfBirth(employee.getDateOfBirth());
-            existingEmployee.setDateOfEmployment(employee.getDateOfEmployment());
-            existingEmployee.setEducation(employee.getEducation());
-            employeeRepository.save(existingEmployee);
-        }
-    }
-
+    @Transactional
     public void deleteEmployee(String passportSeriesNumber) {
-        employeeRepository.deleteByPassportSeriesNumber(passportSeriesNumber);
+        employeeRepository.deleteEmployee(passportSeriesNumber);
     }
 }

@@ -30,15 +30,12 @@ public class OfficeService {
     public void deleteOfficeById(Long id) {
         Office office = officeRepository.findById(id);
         if (office != null) {
-            // Проверка, используется ли кабинет в DoctorSchedule
             boolean isOfficeUsed = doctorScheduleRepository.isOfficeUsed(office);
 
             if (!isOfficeUsed) {
                 officeRepository.delete(office);
             } else {
-                // Обработка случая, когда кабинет используется
                 log.info("Невозможно удалить кабинет, так как он связан с расписанием врачей.");
-                // Можно выбросить исключение, записать сообщение в логи или обработать иначе в зависимости от логики приложения.
             }
         }
     }

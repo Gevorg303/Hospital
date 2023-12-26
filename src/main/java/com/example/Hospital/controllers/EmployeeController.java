@@ -17,37 +17,47 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
     @Autowired
     private EducationService educationService;
 
     @GetMapping("/list")
-    public String employeeList(Model model) {
+    public String showEmployeeList(Model model) {
         List<Employee> employeeList = employeeService.getAllEmployees();
         model.addAttribute("employeeList", employeeList);
+
+        List<Education> educationList = educationService.getAllEducations();
+        model.addAttribute("educationList", educationList);
+
+        model.addAttribute("newEmployee", new Employee());
+
         return "employee";
     }
 
     @PostMapping("/add")
-    public String addEmployee(@ModelAttribute("employee") Employee employee) {
-        Education selectedEducation = educationService.getEducationById(employee.getEducation().getId());
-        employeeService.addEmployee(employee);
-        return "redirect:/employee/list";
+    public String addEmployee(@ModelAttribute("newEmployee") Employee employee, Model model) {
+        try {
+            employeeService.addEmployee(employee);
+            return "redirect:/employee/list";
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            if (errorMessage.contains("Дата приема на работу должна быть после даты рождения.")) {
+                errorMessage = "Дата приема на работу должна быть после даты рождения.";
+            } else if (errorMessage.contains("Работнику должно быть 18 лет или старше на момент приема на работу.")) {
+                errorMessage = "Работнику должно быть 18 лет или старше на момент приема на работу.";
+            }
+            model.addAttribute("error", errorMessage);
+            List<Employee> employeeList = employeeService.getAllEmployees();
+            model.addAttribute("employeeList", employeeList);
+
+            List<Education> educationList = educationService.getAllEducations();
+            model.addAttribute("educationList", educationList);
+
+            return "employee";
+        }
     }
 
-    @GetMapping("/add")//должен передовать лист с образованиями educationList
-    public String showAddEmployeeForm(Model model) {
-        model.addAttribute("employee", new Employee());
-        List<Education> educationList = educationService.getAllEducations();
-        model.addAttribute("educationList", educationList);
-        return "employee";
-    }
 
-
-    @PostMapping("/edit/{passportSeriesNumber}")
-    public String updateEmployee(@PathVariable String passportSeriesNumber, @ModelAttribute("employee") Employee employee) {
-        employeeService.updateEmployee(passportSeriesNumber, employee);
-        return "redirect:/employee/list";
-    }
 
     @GetMapping("/delete/{passportSeriesNumber}")
     public String deleteEmployee(@PathVariable String passportSeriesNumber) {

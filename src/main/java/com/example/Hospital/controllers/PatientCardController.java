@@ -28,13 +28,11 @@ public class PatientCardController {
 
     @PostMapping("/patientCard/create")
     public String createPatientCard(
-            @NotBlank @ModelAttribute("patientCard") PatientCard patientCard,
-            RedirectAttributes redirectAttributes,
-            @RequestParam("floor") String floor
-    )  {
-        patientCard.setFloor(floor);
+            @NotBlank @ModelAttribute("patientCard") PatientCard patientCard
+    )
+    {
         patientCardService.savePatientCard(patientCard);
-        redirectAttributes.addFlashAttribute("message", "Patient successfully added");
+        //redirectAttributes.addFlashAttribute("message", "Patient successfully added");
         return "redirect:/patients/patientCardsList";
     }
 
@@ -53,17 +51,6 @@ public class PatientCardController {
     public String editPatientCard(PatientCard updatedPatientCard, RedirectAttributes redirectAttributes) {
         patientCardService.updatePatientCard(updatedPatientCard);
         redirectAttributes.addFlashAttribute("message", "Patient details updated successfully");
-        return "redirect:/patients/patientCardsList";
-    }
-
-    @GetMapping("/delete/{passportSeriesNumber}")
-    public String deletePatientCard(@PathVariable String passportSeriesNumber, RedirectAttributes redirectAttributes) {
-        try {
-            patientCardService.deletePatientCardIfNotInUse(passportSeriesNumber);
-            redirectAttributes.addFlashAttribute("message", "Пациент успешно удален");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Ошибка при удалении пациента: " + e.getMessage());
-        }
         return "redirect:/patients/patientCardsList";
     }
 }

@@ -21,13 +21,12 @@ public class DoctorScheduleRepository {
                 .getResultList();
     }
 
-    public DoctorSchedule save(DoctorSchedule doctorSchedule) {
-        if (doctorSchedule.getId() == null) {
-            entityManager.persist(doctorSchedule);
-        } else {
-            doctorSchedule = entityManager.merge(doctorSchedule);
-        }
-        return doctorSchedule;
+    public DoctorSchedule findById(Long id) {
+        return entityManager.find(DoctorSchedule.class, id);
+    }
+
+    public void save(DoctorSchedule doctorSchedule) {
+        entityManager.persist(doctorSchedule);
     }
 
     public void deleteById(Long id) {
@@ -45,5 +44,4 @@ public class DoctorScheduleRepository {
 
         return count != null && count > 0;
     }
-
 }

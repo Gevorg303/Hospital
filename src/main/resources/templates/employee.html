@@ -102,7 +102,7 @@
         <th>Номер телефона</th>
         <th>Дата рождения</th>
         <th>Дата приема на работу</th>
-        <th>ID образования</th>
+        <th>Образование</th>
         <th>Действия</th>
     </tr>
     </thead>
@@ -115,7 +115,7 @@
         <td th:text="${employee.phoneNumber}"></td>
         <td th:text="${employee.dateOfBirth}"></td>
         <td th:text="${employee.dateOfEmployment}"></td>
-        <td th:text="${employee.education.id}"></td>
+        <td th:text="${employee.education.name}"></td>
         <td>
             <a th:href="@{'/employee/delete/' + ${employee.passportSeriesNumber}}">Удалить</a>
         </td>
@@ -127,38 +127,42 @@
 </table>
 <div id="addForm">
     <h5>Добавить сотрудника</h5>
-<form action="/employee/add" method="post">
-    <label for="passportSeriesNumber">Серия и номер паспорта:</label>
-    <input type="text" id="passportSeriesNumber" name="passportSeriesNumber" required/><br>
+    <form action="/employee/add" method="post">
+        <label for="passportSeriesNumber">Серия и номер паспорта:</label>
+        <input type="text" id="passportSeriesNumber" name="passportSeriesNumber" required/><br>
 
-    <label for="surname">Фамилия:</label>
-    <input type="text" id="surname" name="surname" required/><br>
+        <label for="surname">Фамилия:</label>
+        <input type="text" id="surname" name="surname" required/><br>
 
-    <label for="name">Имя:</label>
-    <input type="text" id="name" name="name" required/><br>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required/><br>
 
-    <label for="patronymic">Отчество:</label>
-    <input type="text" id="patronymic" name="patronymic" required/><br>
+        <label for="patronymic">Отчество:</label>
+        <input type="text" id="patronymic" name="patronymic" required/><br>
 
-    <label for="phoneNumber">Номер телефона:</label>
-    <input type="text" id="phoneNumber" name="phoneNumber"/><br>
+        <label for="phoneNumber">Номер телефона:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber"/><br>
 
-    <label for="dateOfBirth">Дата рождения:</label>
-    <input type="date" id="dateOfBirth" name="dateOfBirth" required/><br>
+        <label for="dateOfBirth">Дата рождения:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" required/><br>
 
-    <label for="dateOfEmployment">Дата приема на работу:</label>
-    <input type="date" id="dateOfEmployment" name="dateOfEmployment" required/><br>
+        <label for="dateOfEmployment">Дата приема на работу:</label>
+        <input type="date" id="dateOfEmployment" name="dateOfEmployment" required/><br>
 
-    <label for="education">Образование:</label>
-    <select id="education" name="education.id" required>
-        <option value="">Выберите образование</option>
-        <option th:each="education : ${educationList}"
-                th:value="${education.id}"
-                th:text="${education.name}"></option>
-    </select><br>
+        <label for="education">Образование:</label>
+        <select id="education" name="education.id" required>
+            <option value="">Выберите образование</option>
+            <option th:each="education : ${educationList}"
+                    th:value="${education.id}"
+                    th:text="${education.name}"></option>
+        </select><br>
 
-    <input type="submit" value="Добавить сотрудника">
-</form>
+        <input type="submit" value="Добавить сотрудника">
+    </form>
+    <div th:if="${error}" style="color: red; margin-top: 10px;">
+        <p th:text="${error}"></p>
+    </div>
+
 </div>
 
 </body>

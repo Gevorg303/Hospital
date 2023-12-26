@@ -2,13 +2,14 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Графики врачей</title>
+    <title>Управление графиками врачей</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
+            color: #333;
         }
 
         h1 {
@@ -20,9 +21,11 @@
         }
 
         table {
-            width: 100%;
+            width: 90%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         }
 
         th, td {
@@ -40,70 +43,124 @@
             background-color: #f2f2f2;
         }
 
-        a {
+        button[type="submit"], input[type="submit"] {
             display: inline-block;
             padding: 10px 20px;
-            margin-bottom: 20px;
-            text-decoration: none;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 5px;
-        }
-
-        a:hover {
-            background-color: #45a049;
-        }
-
-        button[type="submit"] {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-bottom: 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
 
-        button[type="submit"]:hover {
+        button[type="submit"]:hover, input[type="submit"]:hover {
             background-color: #45a049;
         }
 
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"] {
+            width: 500px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        div[th:if] {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        div[th:if="green"] {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        div[th:if="red"] {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        #addForm {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        h3 {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <form action="/" method="get" style="margin-bottom: 20px;">
     <button type="submit">Вернуться на главную</button>
 </form>
-<h1>Список графиков врачей</h1>
-
+<h1>Управление графиками врачей</h1>
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>Ставка</th>
         <th>Дата назначения</th>
+        <th>График работы сотрудника</th>
         <th>Серия и номер паспорта врача</th>
-        <th>Специализация</th>
-        <th>Кабинет</th>
+        <th>Наименование специализации</th>
+        <th>Номер кабинета</th>
         <th>Действия</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="doctorSchedule : ${doctorSchedules}">
-        <td th:text="${doctorSchedule.id}"></td>
         <td th:text="${doctorSchedule.bet}"></td>
         <td th:text="${doctorSchedule.dateOfCalculationBid}"></td>
+        <td th:text="${doctorSchedule.workSchedule.id}"></td>
         <td th:text="${doctorSchedule.passportSeriesNumber}"></td>
         <td th:text="${doctorSchedule.specialization.name}"></td>
         <td th:text="${doctorSchedule.office.number}"></td>
         <td>
-            <a th:href="@{/doctorSchedules/delete/{id}(id=${doctorSchedule.id})}">Удалить</a>
+            <form th:action="@{/doctorSchedules/delete/{id}(id=${doctorSchedule.id})}" th:method="post">
+                <input type="submit" value="Удалить">
+            </form>
         </td>
     </tr>
     </tbody>
 </table>
 
-<a href="/doctorSchedules/add">Добавить новый график врача</a>
+<hr>
+<div id="addForm">
+    <h3>Добавить график</h3>
+    <form th:action="@{/doctorSchedules/add}" method="post" th:object="${newDoctorSchedule}">
+        Ставка: <input type="number" th:field="*{bet}" placeholder="Ставка" required><br>
+        Дата назначения: <input type="date" th:field="*{dateOfCalculationBid}" placeholder="Дата назначения" required><br>
+        Серия и номер паспорта: <input type="text" th:field="*{passportSeriesNumber}" placeholder="Серия и номер паспорта" required><br>
+        Графика работы: <input type="number" th:field="*{workSchedule.id}" required><br>
+        Специализации: <input type="number" th:field="*{specialization.id}" required><br>
+        Кабинета: <input type="number" th:field="*{office.id}" required><br>
+        <input type="submit" value="Добавить">
+    </form>
+    <div th:if="${error}" style="color: red; margin-top: 10px;">
+        <p th:text="${error}"></p>
+    </div>
+
+</div>
 </body>
 </html>

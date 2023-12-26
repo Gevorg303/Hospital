@@ -2,6 +2,8 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "график_работы")
 @AllArgsConstructor
+@Data
+@Getter
 @NoArgsConstructor
 public class WorkSchedule {
     @Id

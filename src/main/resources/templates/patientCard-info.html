@@ -137,10 +137,5 @@
 </div>
 
 <hr>
-
-<form action="/patients/delete/{passportSeriesNumber}" method="get">
-    <input type="hidden" name="passportSeriesNumber" th:value="${patient.passportSeriesNumber}" />
-    <button type="submit" onclick="return confirm('Вы уверены?')">Удалить</button>
-</form>
 </body>
 </html>
