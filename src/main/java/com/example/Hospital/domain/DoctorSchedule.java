@@ -6,8 +6,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "график_врача")
@@ -35,4 +37,6 @@ public class DoctorSchedule {
     @ManyToOne
     @JoinColumn(name = "идентификатор_кабинета_оказания_у")
     private Office office;
+    @Column(name = "наименования_графика_врача")
+    private String name;
 }

@@ -3,10 +3,8 @@ package com.example.Hospital.domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 

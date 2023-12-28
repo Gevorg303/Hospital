@@ -30,10 +30,14 @@ public class RecordsController {
             recordsService.addRecord(record);
             return "redirect:/records/list";
         } catch (Exception e) {
-            String errorMessage = e.getMessage();
-            if (errorMessage.contains("Невозможно добавить запись на прием. У пациента нет карточки.")) {
+            String errorMessage = "Произошла ошибка при добавлении записи на прием.";
+
+            if (e.getMessage() != null && e.getMessage().contains("Невозможно добавить запись на прием. У пациента нет карточки.")) {
                 errorMessage = "Невозможно добавить запись на прием. У пациента нет карточки.";
+            } else if (e.getMessage() != null && e.getMessage().contains("Нельзя записаться на дату и время до текущей даты и времени")) {
+                errorMessage = "Нельзя записаться на дату и время до текущей даты и времени";
             }
+
             model.addAttribute("error", errorMessage);
             model.addAttribute("recordsList", recordsService.getAllRecords());
             model.addAttribute("newRecord", record);

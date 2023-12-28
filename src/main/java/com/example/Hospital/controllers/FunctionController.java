@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -149,5 +150,51 @@ public class FunctionController {
         resultMap.put("result", result);
 
         return resultMap;
+    }
+
+    @GetMapping("/call-high-salary-positions")
+    @ResponseBody
+    public List<Map<String, Object>> callHighSalaryPositions() {
+        String sql = "SELECT * FROM count_high_salary_positions()";
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    @GetMapping("/call-employee-education-info")
+    @ResponseBody
+    public List<Map<String, Object>> callEmployeeEducationInfo() {
+        String sql = "SELECT * FROM employee_education_info()";
+        return jdbcTemplate.queryForList(sql);
+    }
+    @GetMapping("/call-employees-count-per-education")
+    @ResponseBody
+    public List<Map<String, Object>> callEmployeesCountPerEducation() {
+        String sql = "SELECT * FROM employees_count_per_education()";
+        return jdbcTemplate.queryForList(sql);
+    }
+    @GetMapping("/months-with-more-than-5-appointments")
+    @ResponseBody
+    public List<Map<String, Object>> callMonthsWithMoreThan5Appointments() {
+        String sql = "SELECT * FROM months_with_more_than_5_appointments()";
+        return jdbcTemplate.queryForList(sql);
+    }
+    @GetMapping("/service-count-by-month")
+    @ResponseBody
+    public List<Map<String, Object>> callServiceCountByMonth(
+            @RequestParam("year_input") int yearInput
+    ) {
+        String sql = "SELECT * FROM service_count_by_month(?)";
+        return jdbcTemplate.queryForList(sql, yearInput);
+    }
+    @GetMapping("/patients-and-representatives")
+    @ResponseBody
+    public List<Map<String, Object>> getPatientsAndRepresentatives() {
+        String sql = "SELECT * FROM patients_and_legal_representatives_with_link()";
+        return jdbcTemplate.queryForList(sql);
+    }
+    @GetMapping("/count-appointments-adults-current-year")
+    @ResponseBody
+    public List<Map<String, Object>> getAppointmentsCountAdultsCurrentYear() {
+        String sql = "SELECT * FROM count_appointments_adults_current_year_with_month_names()";
+        return jdbcTemplate.queryForList(sql);
     }
 }

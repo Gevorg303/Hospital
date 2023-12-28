@@ -40,6 +40,48 @@
     <button type="submit">Вернуться на главную</button>
 </form>
 
+<form id="highSalaryPositionsForm" action="/call-high-salary-positions" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callHighSalaryPositionsFunction()">Должности с окладом выше 50000</button>
+</form>
+<div id="highSalaryPositionsResult" style="display: none;"></div>
+
+
+<form id="employeeEducationInfoForm" action="/call-employee-education-info" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callEmployeeEducationInfoFunction()">Информация об образовании сотрудников</button>
+</form>
+<div id="employeeEducationInfoResult" style="display: none;"></div>
+
+
+<form id="employeesCountPerEducationForm" action="/call-employees-count-per-education" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callEmployeesCountPerEducationFunction()">Количество сотрудников по образованию</button>
+</form>
+<div id="employeesCountPerEducationResult" style="display: none;"></div>
+
+
+<form id="monthsWithMoreThan5AppointmentsForm" action="/months-with-more-than-5-appointments" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callMonthsWithMoreThan5AppointmentsFunction()">Месяцы с более чем 5 записями</button>
+</form>
+<div id="monthsWithMoreThan5AppointmentsResult" style="display: none;"></div>
+
+
+<form id="serviceCountByMonthForm" action="/service-count-by-month" method="get" style="margin-bottom: 20px;">
+    <button type="button" onclick="callServiceCountByMonthFunction()">Количество услуг по месяцам</button>
+    <label for="yearInput">Год:</label>
+    <input type="number" id="yearInput" name="year_input" required>
+</form>
+<div id="serviceCountByMonthResult" style="display: none;"></div>
+
+
+<button onclick="getPatientsAndRepresentatives()">Пациенты и их представители</button>
+<div id="patientsAndRepresentativesResult" style="display: none;"></div>
+
+
+<button onclick="getAppointmentsCountAdultsCurrentYear()">Сколько было записей в текущем году по месяцам где пациент - совершеннолетний</button>
+<div id="appointmentsCountResult" style="display: none;"></div>
+
+
+
+
 <form id="dateForm" action="/call-function" method="get" style="margin-bottom: 20px;">
     <button type="button" onclick="callDatabaseFunction()">Сколько работников с высшим образованием было принято на работу в данный промежуток времени</button>
     <label for="startDate">Начальная дата:</label>
@@ -146,286 +188,492 @@
 
 
 <script>
-    function callDatabaseFunction() {
-      var startDate = $('#startDate').val();
-      var endDate = $('#endDate').val();
+        function callHighSalaryPositionsFunction() {
+           $.ajax({
+               type: 'GET',
+               url: '/call-high-salary-positions',
+               success: function (response) {
+                   console.log("Response:", response);
 
-      $.ajax({
-          type: 'GET',
-          url: '/call-function',
-          data: {
-              start_date: startDate,
-              end_date: endDate
-          },
-          success: function (response) {
-              console.log("Response:", response);
+                   if (Array.isArray(response) && response.length > 0) {
+                       var html = '<table><tr><th>Название должности</th><th>Оклад</th></tr>';
+                       response.forEach(function (item) {
+                           html += '<tr><td>' + item["название_должности"] + '</td><td>' + item["оклад"] + '</td></tr>';
+                       });
+                       html += '</table>';
+                       $('#highSalaryPositionsResult').html(html);
+                       $('#highSalaryPositionsResult').show();
+                   } else {
+                       $('#highSalaryPositionsResult').html('Нет данных для отображения');
+                       $('#highSalaryPositionsResult').show();
+                   }
+               },
+               error: function (error) {
+                   console.error('Ошибка вызова функции для должностей с окладом из базы данных:', error);
+               }
+           });
+       }
 
-              // Check if the response is an object
-              if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                  $('#result').html('Количество работников: ' + response.result);
-                  $('#result').show();
-              } else {
-                  console.error('Unexpected response format:', response);
-              }
-          },
-          error: function (error) {
-              console.error('Error calling database function:', error);
-          }
-      });
-  }
+
+     function callEmployeeEducationInfoFunction() {
+            $.ajax({
+                type: 'GET',
+                url: '/call-employee-education-info',
+                success: function (response) {
+                    console.log("Response:", response);
+
+                    if (Array.isArray(response) && response.length > 0) {
+                        var html = '<table><tr><th>Фамилия</th><th>Имя</th><th>Отчество</th><th>Образование</th></tr>';
+                        response.forEach(function (item) {
+                            html += '<tr><td>' + item["фамилия"] + '</td><td>' + item["имя"] + '</td><td>' + item["отчество"] + '</td><td>' + item["образование"] + '</td></tr>';
+                        });
+                        html += '</table>';
+                        $('#employeeEducationInfoResult').html(html);
+                        $('#employeeEducationInfoResult').show();
+                    } else {
+                        $('#employeeEducationInfoResult').html('Нет данных для отображения');
+                        $('#employeeEducationInfoResult').show();
+                    }
+                },
+                error: function (error) {
+                    console.error('Ошибка вызова функции для информации об образовании сотрудников из базы данных:', error);
+                }
+            });
+        }
+
+
+        function callEmployeesCountPerEducationFunction() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/call-employees-count-per-education',
+                    success: function (response) {
+                        console.log("Response:", response);
+
+                        if (Array.isArray(response) && response.length > 0) {
+                            var html = '<table><tr><th>Образование</th><th>Количество людей</th></tr>';
+                            response.forEach(function (item) {
+                                html += '<tr><td>' + item["образование"] + '</td><td>' + item["количество_людей"] + '</td></tr>';
+                            });
+                            html += '</table>';
+                            $('#employeesCountPerEducationResult').html(html);
+                            $('#employeesCountPerEducationResult').show();
+                        } else {
+                            $('#employeesCountPerEducationResult').html('Нет данных для отображения');
+                            $('#employeesCountPerEducationResult').show();
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Ошибка вызова функции для количества сотрудников по образованию из базы данных:', error);
+                    }
+                });
+            }
+
+
+      function callMonthsWithMoreThan5AppointmentsFunction() {
+            $.ajax({
+                type: 'GET',
+                url: '/months-with-more-than-5-appointments',
+                success: function (response) {
+                    console.log("Response:", response);
+
+                    if (Array.isArray(response) && response.length > 0) {
+                        var html = '<ul>';
+                        response.forEach(function (item) {
+                            html += '<li>' + item["месяц"] + '</li>';
+                        });
+                        html += '</ul>';
+                        $('#monthsWithMoreThan5AppointmentsResult').html(html);
+                        $('#monthsWithMoreThan5AppointmentsResult').show();
+                    } else {
+                        $('#monthsWithMoreThan5AppointmentsResult').html('Нет данных для отображения');
+                        $('#monthsWithMoreThan5AppointmentsResult').show();
+                    }
+                },
+                error: function (error) {
+                    console.error('Ошибка вызова функции для месяцев с более чем 5 записями из базы данных:', error);
+                }
+            });
+        }
+
+
+ function callServiceCountByMonthFunction() {
+        var yearInput = $('#yearInput').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/service-count-by-month',
+            data: {
+                year_input: yearInput
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (Array.isArray(response) && response.length > 0) {
+                    var html = '<ul>';
+                    response.forEach(function (item) {
+                        html += '<li>' + item["месяц"] + ', ' + item["наименование_услуги"] + ', ' + item["количество_раз"] + '</li>';
+                    });
+                    html += '</ul>';
+                    $('#serviceCountByMonthResult').html(html);
+                    $('#serviceCountByMonthResult').show();
+                } else {
+                    $('#serviceCountByMonthResult').html('Нет данных для отображения');
+                    $('#serviceCountByMonthResult').show();
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции из базы данных:', error);
+            }
+        });
+    }
+
+function getPatientsAndRepresentatives() {
+        $.ajax({
+            type: 'GET',
+            url: '/patients-and-representatives',
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (Array.isArray(response) && response.length > 0) {
+                    var html = '<table><thead><tr><th>Фамилия пациента</th><th>Имя пациента</th><th>Отчество пациента</th>' +
+                        '<th>Дата рождения пациента</th><th>Фамилия представителя</th><th>Имя представителя</th>' +
+                        '<th>Отчество представителя</th><th>Дата рождения представителя</th></tr></thead><tbody>';
+
+                    response.forEach(function (item) {
+                        html += '<tr><td>' + item["фамилия_пациента"] + '</td><td>' + item["имя_пациента"] + '</td>' +
+                            '<td>' + item["отчество_пациента"] + '</td><td>' + item["дата_рождения_пациента"] + '</td>' +
+                            '<td>' + item["фамилия_представителя"] + '</td><td>' + item["имя_представителя"] + '</td>' +
+                            '<td>' + item["отчество_представителя"] + '</td><td>' + item["дата_рождения_представителя"] + '</td></tr>';
+                    });
+
+                    html += '</tbody></table>';
+                    $('#patientsAndRepresentativesResult').html(html);
+                    $('#patientsAndRepresentativesResult').show();
+                } else {
+                    $('#patientsAndRepresentativesResult').html('Нет данных для отображения');
+                    $('#patientsAndRepresentativesResult').show();
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции из базы данных:', error);
+            }
+        });
+    }
+
+
+ function getAppointmentsCountAdultsCurrentYear() {
+        $.ajax({
+            type: 'GET',
+            url: '/count-appointments-adults-current-year',
+            success: function (response) {
+                console.log("Response:", response);
+
+                if (Array.isArray(response) && response.length > 0) {
+                    var html = '<table><thead><tr><th>Месяц</th><th>Количество записей</th></tr></thead><tbody>';
+
+                    response.forEach(function (item) {
+                        html += '<tr><td>' + item["месяц"] + '</td><td>' + item["количество_записей"] + '</td></tr>';
+                    });
+
+                    html += '</tbody></table>';
+                    $('#appointmentsCountResult').html(html);
+                    $('#appointmentsCountResult').show();
+                } else {
+                    $('#appointmentsCountResult').html('Нет данных для отображения');
+                    $('#appointmentsCountResult').show();
+                }
+            },
+            error: function (error) {
+                console.error('Ошибка вызова функции из базы данных:', error);
+            }
+        });
+    }
+
+
+
+
+
+
+   function callDatabaseFunction() {
+     var startDate = $('#startDate').val();
+     var endDate = $('#endDate').val();
+
+     $.ajax({
+         type: 'GET',
+         url: '/call-function',
+         data: {
+             start_date: startDate,
+             end_date: endDate
+         },
+         success: function (response) {
+             console.log("Response:", response);
+
+             // Check if the response is an object
+             if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                 $('#result').html('Количество работников: ' + response.result);
+                 $('#result').show();
+             } else {
+                 console.error('Unexpected response format:', response);
+             }
+         },
+         error: function (error) {
+             console.error('Error calling database function:', error);
+         }
+     });
+ }
 
 
 function callDoctorFunction() {
-        var startDate = $('#start_date_1').val();
-        var endDate = $('#end_date_1').val();
+       var startDate = $('#start_date_1').val();
+       var endDate = $('#end_date_1').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/call-doctors-function',
-            data: {
-                start_date: startDate,
-                end_date: endDate
-            },
-            success: function (response) {
-                console.log("Response:", response);
+       $.ajax({
+           type: 'GET',
+           url: '/call-doctors-function',
+           data: {
+               start_date: startDate,
+               end_date: endDate
+           },
+           success: function (response) {
+               console.log("Response:", response);
 
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#doctorResult').html('Количество врачей: ' + response.result);
-                    $('#doctorResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для врачей из базы данных:', error);
-            }
-        });
-    }
-
-
-    function callDoctorsBySpecializationFunction() {
-        var specializationName = $('#specialization_name').val();
-        var startDate = $('#start_date_2').val();
-        var endDate = $('#end_date_2').val();
-
-        $.ajax({
-            type: 'GET',
-            url: '/call-doctors-by-specialization',
-            data: {
-                specialization_name: specializationName,
-                start_date: startDate,
-                end_date: endDate
-            },
-            success: function (response) {
-                console.log("Response:", response);
-
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#specializationResult').html('Количество врачей по специализации: ' + response.result);
-                    $('#specializationResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для врачей по специализации из базы данных:', error);
-            }
-        });
-    }
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#doctorResult').html('Количество врачей: ' + response.result);
+                   $('#doctorResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для врачей из базы данных:', error);
+           }
+       });
+   }
 
 
-     function callFemalePatientsFunction() {
-        var appointmentDate = $('#appointment_date').val();
+   function callDoctorsBySpecializationFunction() {
+       var specializationName = $('#specialization_name').val();
+       var startDate = $('#start_date_2').val();
+       var endDate = $('#end_date_2').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/call-female-patients',
-            data: {
-                appointment_date: appointmentDate
-            },
-            success: function (response) {
-                console.log("Response:", response);
+       $.ajax({
+           type: 'GET',
+           url: '/call-doctors-by-specialization',
+           data: {
+               specialization_name: specializationName,
+               start_date: startDate,
+               end_date: endDate
+           },
+           success: function (response) {
+               console.log("Response:", response);
 
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#femalePatientsResult').html('Количество женщин на приеме: ' + response.result);
-                    $('#femalePatientsResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для подсчета женщин на приеме из базы данных:', error);
-            }
-        });
-    }
-
-
-     function callEmployeesWithEducationFunction() {
-        var year = $('#year').val();
-
-        $.ajax({
-            type: 'GET',
-            url: '/call-employees-with-education',
-            data: {
-                year: year
-            },
-            success: function (response) {
-                console.log("Response:", response);
-
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#employeesWithEducationResult').html('Количество сотрудников с высшим неполным образованием до указанного года: ' + response.result);
-                    $('#employeesWithEducationResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для подсчета сотрудников с высшим неполным образованием из базы данных:', error);
-            }
-        });
-    }
-
-    function callExpensiveServicesWithoutResultsFunction() {
-        var cost = $('#cost').val();
-        var startDateService = $('#start_date_service').val();
-        var endDateService = $('#end_date_service').val();
-
-        $.ajax({
-            type: 'GET',
-            url: '/call-expensive-services-without-results',
-            data: {
-                cost: cost,
-                start_date_service: startDateService,
-                end_date_service: endDateService
-            },
-            success: function (response) {
-                console.log("Response:", response);
-
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#expensiveServicesWithoutResultsResult').html('Количество дорогих услуг без результатов в указанный период: ' + response.result);
-                    $('#expensiveServicesWithoutResultsResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для подсчета дорогих услуг без результатов из базы данных:', error);
-            }
-        });
-    }
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#specializationResult').html('Количество врачей по специализации: ' + response.result);
+                   $('#specializationResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для врачей по специализации из базы данных:', error);
+           }
+       });
+   }
 
 
-    function callPatientsWithoutPhoneOver18Function() {
-        var startDateRecord = $('#start_date_record').val();
-        var endDateRecord = $('#end_date_record').val();
+    function callFemalePatientsFunction() {
+       var appointmentDate = $('#appointment_date').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/call-patients-without-phone-over-18',
-            data: {
-                start_date_record: startDateRecord,
-                end_date_record: endDateRecord
-            },
-            success: function (response) {
-                console.log("Response:", response);
+       $.ajax({
+           type: 'GET',
+           url: '/call-female-patients',
+           data: {
+               appointment_date: appointmentDate
+           },
+           success: function (response) {
+               console.log("Response:", response);
 
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#patientsWithoutPhoneOver18Result').html('Количество пациентов старше 18 лет без контактного телефона в указанный период: ' + response.result);
-                    $('#patientsWithoutPhoneOver18Result').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для подсчета пациентов старше 18 лет без контактного телефона из базы данных:', error);
-            }
-        });
-    }
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#femalePatientsResult').html('Количество женщин на приеме: ' + response.result);
+                   $('#femalePatientsResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для подсчета женщин на приеме из базы данных:', error);
+           }
+       });
+   }
 
 
-     function callQualifiedEmployeesFunction() {
-        var startDateAccepted = $('#start_date_accepted').val();
-        var endDateAccepted = $('#end_date_accepted').val();
+    function callEmployeesWithEducationFunction() {
+       var year = $('#year').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/call-qualified-employees',
-            data: {
-                start_date_accepted: startDateAccepted,
-                end_date_accepted: endDateAccepted
-            },
-            success: function (response) {
-                console.log("Response:", response);
+       $.ajax({
+           type: 'GET',
+           url: '/call-employees-with-education',
+           data: {
+               year: year
+           },
+           success: function (response) {
+               console.log("Response:", response);
 
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#qualifiedEmployeesResult').html('Количество квалифицированных сотрудников, принятых на работу в указанный период: ' + response.result);
-                    $('#qualifiedEmployeesResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для подсчета квалифицированных сотрудников из базы данных:', error);
-            }
-        });
-    }
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#employeesWithEducationResult').html('Количество сотрудников с высшим неполным образованием до указанного года: ' + response.result);
+                   $('#employeesWithEducationResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для подсчета сотрудников с высшим неполным образованием из базы данных:', error);
+           }
+       });
+   }
 
-     function callPatientsWithMoreThanTwoAppointmentsFunction() {
-        var appointmentsCount = $('#appointments_count').val();
-        var startDateRecord = $('#start_date_record1').val();
-        var endDateRecord = $('#end_date_record1').val();
+   function callExpensiveServicesWithoutResultsFunction() {
+       var cost = $('#cost').val();
+       var startDateService = $('#start_date_service').val();
+       var endDateService = $('#end_date_service').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/call-patients-with-more-than-2-appointments',
-            data: {
-                appointments_count: appointmentsCount,
-                start_date_record: startDateRecord,
-                end_date_record: endDateRecord
-            },
-            success: function (response) {
-                console.log("Response:", response);
+       $.ajax({
+           type: 'GET',
+           url: '/call-expensive-services-without-results',
+           data: {
+               cost: cost,
+               start_date_service: startDateService,
+               end_date_service: endDateService
+           },
+           success: function (response) {
+               console.log("Response:", response);
 
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#patientsWithMoreThanTwoAppointmentsResult').html('Количество пациентов с более чем двумя записями к врачу в указанный период: ' + response.result);
-                    $('#patientsWithMoreThanTwoAppointmentsResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для подсчета пациентов с более чем двумя записями к врачу из базы данных:', error);
-            }
-        });
-    }
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#expensiveServicesWithoutResultsResult').html('Количество дорогих услуг без результатов в указанный период: ' + response.result);
+                   $('#expensiveServicesWithoutResultsResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для подсчета дорогих услуг без результатов из базы данных:', error);
+           }
+       });
+   }
 
-    function callPatientsWithMoreThanOneContractFunction() {
-        var contractsCount = $('#contracts_count').val();
-        var startDateContract = $('#start_date_contract').val();
-        var endDateContract = $('#end_date_contract').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/call-patients-with-more-than-1-contract',
-            data: {
-                contracts_count: contractsCount,
-                start_date_contract: startDateContract,
-                end_date_contract: endDateContract
-            },
-            success: function (response) {
-                console.log("Response:", response);
+   function callPatientsWithoutPhoneOver18Function() {
+       var startDateRecord = $('#start_date_record').val();
+       var endDateRecord = $('#end_date_record').val();
 
-                if (typeof response === 'object' && response.hasOwnProperty('result')) {
-                    $('#patientsWithMoreThanOneContractResult').html('Количество пациентов с более чем одним договором в указанный период: ' + response.result);
-                    $('#patientsWithMoreThanOneContractResult').show();
-                } else {
-                    console.error('Неожиданный формат ответа:', response);
-                }
-            },
-            error: function (error) {
-                console.error('Ошибка вызова функции для подсчета пациентов с более чем одним договором из базы данных:', error);
-            }
-        });
-    }
+       $.ajax({
+           type: 'GET',
+           url: '/call-patients-without-phone-over-18',
+           data: {
+               start_date_record: startDateRecord,
+               end_date_record: endDateRecord
+           },
+           success: function (response) {
+               console.log("Response:", response);
+
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#patientsWithoutPhoneOver18Result').html('Количество пациентов старше 18 лет без контактного телефона в указанный период: ' + response.result);
+                   $('#patientsWithoutPhoneOver18Result').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для подсчета пациентов старше 18 лет без контактного телефона из базы данных:', error);
+           }
+       });
+   }
+
+
+    function callQualifiedEmployeesFunction() {
+       var startDateAccepted = $('#start_date_accepted').val();
+       var endDateAccepted = $('#end_date_accepted').val();
+
+       $.ajax({
+           type: 'GET',
+           url: '/call-qualified-employees',
+           data: {
+               start_date_accepted: startDateAccepted,
+               end_date_accepted: endDateAccepted
+           },
+           success: function (response) {
+               console.log("Response:", response);
+
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#qualifiedEmployeesResult').html('Количество квалифицированных сотрудников, принятых на работу в указанный период: ' + response.result);
+                   $('#qualifiedEmployeesResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для подсчета квалифицированных сотрудников из базы данных:', error);
+           }
+       });
+   }
+
+    function callPatientsWithMoreThanTwoAppointmentsFunction() {
+       var appointmentsCount = $('#appointments_count').val();
+       var startDateRecord = $('#start_date_record1').val();
+       var endDateRecord = $('#end_date_record1').val();
+
+       $.ajax({
+           type: 'GET',
+           url: '/call-patients-with-more-than-2-appointments',
+           data: {
+               appointments_count: appointmentsCount,
+               start_date_record: startDateRecord,
+               end_date_record: endDateRecord
+           },
+           success: function (response) {
+               console.log("Response:", response);
+
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#patientsWithMoreThanTwoAppointmentsResult').html('Количество пациентов с более чем двумя записями к врачу в указанный период: ' + response.result);
+                   $('#patientsWithMoreThanTwoAppointmentsResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для подсчета пациентов с более чем двумя записями к врачу из базы данных:', error);
+           }
+       });
+   }
+
+   function callPatientsWithMoreThanOneContractFunction() {
+       var contractsCount = $('#contracts_count').val();
+       var startDateContract = $('#start_date_contract').val();
+       var endDateContract = $('#end_date_contract').val();
+
+       $.ajax({
+           type: 'GET',
+           url: '/call-patients-with-more-than-1-contract',
+           data: {
+               contracts_count: contractsCount,
+               start_date_contract: startDateContract,
+               end_date_contract: endDateContract
+           },
+           success: function (response) {
+               console.log("Response:", response);
+
+               if (typeof response === 'object' && response.hasOwnProperty('result')) {
+                   $('#patientsWithMoreThanOneContractResult').html('Количество пациентов с более чем одним договором в указанный период: ' + response.result);
+                   $('#patientsWithMoreThanOneContractResult').show();
+               } else {
+                   console.error('Неожиданный формат ответа:', response);
+               }
+           },
+           error: function (error) {
+               console.error('Ошибка вызова функции для подсчета пациентов с более чем одним договором из базы данных:', error);
+           }
+       });
+   }
 </script>
 </body>
 </html>

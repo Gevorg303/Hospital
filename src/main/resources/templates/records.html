@@ -88,8 +88,10 @@
     <tr>
         <th>Дата</th>
         <th>Время</th>
-        <th>График врача</th>
-        <th>Серия и номер пациента</th>
+        <th>Наименование графика врача</th>
+        <th>Фамилия пациента</th>
+        <th>Имя пациента</th>
+        <th>Отчество пациента</th>
         <th>Действия</th>
     </tr>
     </thead>
@@ -97,8 +99,10 @@
     <tr th:each="record : ${recordsList}">
         <td th:text="${record.dateReception}"></td>
         <td th:text="${record.timeReception}"></td>
-        <td th:text="${record.doctorSchedule.id}"></td>
-        <td th:text="${record.patientCard.passportSeriesNumber}"></td>
+        <td th:text="${record.doctorSchedule?.name}"></td>
+        <td th:text="${record.patientCard.surname}"></td>
+        <td th:text="${record.patientCard.name}"></td>
+        <td th:text="${record.patientCard.patronymic}"></td>
         <td>
             <a th:href="@{'/records/delete/' + ${record.id}}">Удалить</a>
         </td>

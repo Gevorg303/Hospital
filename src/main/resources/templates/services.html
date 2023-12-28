@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Управление графиками врачей</title>
+    <title>Услуги</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,7 +63,7 @@
             margin-bottom: 5px;
         }
 
-        input[type="text"], input[type="number"], input[type="date"] {
+        input[type="text"], input[type="number"] {
             width: 500px;
             padding: 8px;
             margin-bottom: 10px;
@@ -115,55 +115,34 @@
 <form action="/" method="get" style="margin-bottom: 20px;">
     <button type="submit">Вернуться на главную</button>
 </form>
-<h1>Управление графиками врачей</h1>
+<h1>Список услуг</h1>
 <table>
     <thead>
     <tr>
-        <th>Наименование графика врача</th>
-        <th>Ставка</th>
-        <th>Дата назначения</th>
-        <th>График работы сотрудника</th>
-        <th>Серия и номер паспорта врача</th>
-        <th>Наименование специализации</th>
-        <th>Номер кабинета</th>
-        <th>Действия</th>
+        <th>Наименование</th>
+        <th>Стоимость</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="doctorSchedule : ${doctorSchedules}">
-        <td th:text="${doctorSchedule.name}"></td>
-        <td th:text="${doctorSchedule.bet}"></td>
-        <td th:text="${doctorSchedule.dateOfCalculationBid}"></td>
-        <td th:text="${doctorSchedule.workSchedule.descriptionGraphicWork}"></td>
-        <td th:text="${doctorSchedule.passportSeriesNumber}"></td>
-        <td th:text="${doctorSchedule.specialization.name}"></td>
-        <td th:text="${doctorSchedule.office.number}"></td>
-        <td>
-            <form th:action="@{/doctorSchedules/delete/{id}(id=${doctorSchedule.id})}" th:method="post">
-                <input type="submit" value="Удалить">
-            </form>
-        </td>
+    <tr th:each="service : ${services}">
+        <td th:text="${service.name}"></td>
+        <td th:text="${service.price}"></td>
+
     </tr>
     </tbody>
 </table>
 
 <hr>
 <div id="addForm">
-    <h3>Добавить график</h3>
-    <form th:action="@{/doctorSchedules/add}" method="post" th:object="${newDoctorSchedule}">
-        Наименование графика врача: <input type="text" th:field="*{name}" required><br>
-        Ставка: <input type="number" th:field="*{bet}" placeholder="Ставка" required><br>
-        Дата назначения: <input type="date" th:field="*{dateOfCalculationBid}"><br>
-        Серия и номер паспорта: <input type="text" th:field="*{passportSeriesNumber}" placeholder="Серия и номер паспорта" required><br>
-        Графика работы: <input type="text" th:field="*{workSchedule.descriptionGraphicWork}" required><br>
-        Специализации: <input type="text" th:field="*{specialization.name}" required><br>
-        Кабинета: <input type="text" th:field="*{office.name}" required><br>
+    <h3>Добавить услугу</h3>
+    <form th:action="@{/services/add}" method="post" th:object="${newService}">
+        Название: <input type="text" th:field="*{name}" name="name" required><br>
+        Стоимость: <input type="number" th:field="*{price}" name="price" required><br>
         <input type="submit" value="Добавить">
     </form>
-    <div th:if="${error}" style="color: red; margin-top: 10px;">
-        <p th:text="${error}"></p>
-    </div>
 
+    <div th:if="${message}" th:text="${message}" th:class="${'green'}"></div>
+    <div th:if="${error}" th:text="${error}" th:class="${'red'}"></div>
 </div>
 </body>
 </html>

@@ -25,7 +25,7 @@ public class DoctorScheduleService {
     public DoctorSchedule getDoctorScheduleById(Long id) {
         return doctorScheduleRepository.findById(id);
     }
-
+    @Transactional
     public void addDoctorSchedule(DoctorSchedule doctorSchedule) {
         doctorScheduleRepository.save(doctorSchedule);
     }

@@ -2,11 +2,15 @@ package com.example.Hospital.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Entity
 @Table(name = "должность")
+@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post {

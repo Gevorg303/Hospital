@@ -109,8 +109,8 @@
     </thead>
     <tbody>
     <tr th:each="pclr : ${patientCardLegalRepresentatives}">
-        <td th:text="${pclr.patientCard.passportSeriesNumber}"></td>
-        <td th:text="${pclr.legalRepresentative.id}"></td>
+        <td th:text="${pclr.patientCard.name}"></td>
+        <td th:text="${pclr.legalRepresentative.name}"></td>
         <td>
             <a th:href="@{/patientCardLegalRepresentatives/delete/{id}(id=${pclr.id})}">Удалить</a>
         </td>

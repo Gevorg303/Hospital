@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Должности</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        input[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        div[th:if] {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        div[th:if="green"] {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        div[th:if="red"] {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        #addForm {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        h3 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Вернуться на главную</button>
+</form>
+<h1>Список должностей</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th>Оклад</th>
+        <th>Описание</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${posts}">
+        <td th:text="${post.name}"></td>
+        <td th:text="${post.salary}"></td>
+        <td th:text="${post.description}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+<div id="addForm">
+    <h3>Добавить должность</h3>
+    <form th:action="@{/posts/add}" method="post" th:object="${newPost}">
+        <label>Название: <input type="text" th:field="*{name}" required></label><br>
+        <label>Оклад: <input type="number" th:field="*{salary}" required></label><br>
+        <label>Описание: <input type="text" th:field="*{description}"></label><br>
+        <input type="submit" value="Добавить">
+    </form>
+
+    <div th:if="${message}" th:text="${message}" th:class="${'green'}"></div>
+    <div th:if="${error}" th:text="${error}" th:class="${'red'}"></div>
+</div>
+</body>
+</html>
